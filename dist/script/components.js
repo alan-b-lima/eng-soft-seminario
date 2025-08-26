@@ -1,4 +1,4 @@
-import component from "./.lib/component.js";
+import component from "./lib/component.js";
 export function newJFXTitleBar(title) {
     return (component("div", { className: "jfx-title" }, component("div", { className: "jfx-java-logo" }), component("div", { className: "jfx-window-name" }, title), component("div", { className: "jfx-windows-options" }, component("div", { className: "jfx-minimize" }), component("div", { className: "jfx-restore" }), component("div", { className: "jfx-close" }))));
 }

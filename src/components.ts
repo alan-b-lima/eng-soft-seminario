@@ -1,4 +1,4 @@
-import component from "./.lib/component.js"
+import component from "./lib/component.js"
 
 export function newJFXTitleBar(title: string) {
     return (

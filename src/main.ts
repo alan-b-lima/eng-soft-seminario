@@ -1,5 +1,5 @@
-import component from "./.lib/component.js"
-import slide from "./.lib/slide.js"
+import component from "./lib/component.js"
+import slide from "./lib/slide.js"
 import { newFinalSlide, newHomePage } from "./components.js"
 import { setupEventListenters } from "./listeners.js"
 

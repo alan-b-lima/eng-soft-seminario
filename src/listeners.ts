@@ -1,4 +1,4 @@
-import slide from "./.lib/slide.js";
+import slide from "./lib/slide.js";
 import { ListenerLock, Locker } from "./lock.js";
 
 export function setupEventListenters(ss: slide.SlideShow, tree?: ChoiceTree): Locker {

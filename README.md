@@ -1,11 +1,22 @@
 # Seminário de Engenharia de Software
 
-## Padrão de Projeto
+Esse é um seminário da disciplina de Engenharia de Software I, com quatro tópicos: Padrão de Projeto, Anti-Padrão, Code Smell e Técnica de Refatoração. Com os tópico especificos escolhidos sendo: Repository, Diamante da Morte, Refused Bequest e &#60;técnica de refatoração&#62;, respectivamente. A apresentação está disponível em: https://alan-b-lima.github.io/eng-soft-seminario/dist.
 
-Repository
+## Padrões de Projeto: Repository
 
-https://github.com/alan-b-lima/eng-soft-seminario/blob/f81e2eaf0292b3604889bb06e945614931cbf773/server.go#L15C1-L27C2
 
-## Anti-Padrão
-## Code Smell
-## Técnica de Refatoração
+
+## Anti-Padrões: Diamante da Morte
+
+
+
+## Code Smell: Refused Bequest
+
+
+
+## Técnica de Refatoração: ...
+
+
+
+# Referências
+

@@ -1,4 +1,4 @@
-import slide from "./.lib/slide.js";
+import slide from "./lib/slide.js";
 import { newFinalSlide, newHomePage } from "./components.js";
 import { setupEventListenters } from "./listeners.js";
 function main() {
