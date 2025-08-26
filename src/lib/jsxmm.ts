@@ -1,4 +1,4 @@
-export default function component<K extends keyof HTMLElementTagNameMap>(
+export function element<K extends keyof HTMLElementTagNameMap>(
     tag: K,
     properties: { [J in keyof HTMLElementTagNameMap[K]]?: HTMLElementTagNameMap[K][J] } & Record<string, any> = {},
     ...children: (Node | string)[]
@@ -15,4 +15,13 @@ export default function component<K extends keyof HTMLElementTagNameMap>(
 
     element.append(...children)
     return element
+}
+
+export function style(style: { [K in keyof CSSStyleDeclaration]?: CSSStyleDeclaration[K] }): CSSStyleDeclaration {
+    const componentStyle = new CSSStyleDeclaration()
+    for (const property in style) {
+        componentStyle[property] = style[property]!
+    }
+
+    return componentStyle
 }

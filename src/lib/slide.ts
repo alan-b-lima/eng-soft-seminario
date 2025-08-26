@@ -1,5 +1,5 @@
 namespace slide {
-    type Options = {
+    export type Options = {
         startAt: number,
         counterSelector: string,
     }
@@ -75,13 +75,21 @@ namespace slide {
     export class Slide {
         #root: HTMLElement
         #animations: Animation[]
+        #visible: boolean
         #frame: number
 
-        static CURRENT_CLASS_NAME = "current-slide"
+        static HIDE_SLIDE = (s: Slide) => {
+            s.root().classList.remove("current-slide")
+        }
+        
+        static SHOW_SLIDE = (s: Slide) => {
+            s.root().classList.add("current-slide")
+        }
 
         constructor(root: HTMLElement, ...animation: Animation[]) {
             this.#root = root
             this.#animations = animation
+            this.#visible = false
             this.#frame = 0
         }
 
@@ -89,24 +97,29 @@ namespace slide {
             return this.#root
         }
 
-        #current(): boolean {
-            return this.#root.classList.contains(Slide.CURRENT_CLASS_NAME)
+        visible(): boolean {
+            return this.#visible
         }
 
-        #setCurrent(visible: boolean): void {
+        #setVisible(visible: boolean): void {
+            this.#visible = visible
             if (visible) {
-                this.#root.classList.add(Slide.CURRENT_CLASS_NAME)
+                Slide.SHOW_SLIDE(this)
             } else {
-                this.#root.classList.remove(Slide.CURRENT_CLASS_NAME)
+                Slide.HIDE_SLIDE(this)
             }
+        }
+
+        frame(): number {
+            return this.#frame
         }
 
         enter(): void {
-            if (this.#current()) {
+            if (this.visible()) {
                 return
             }
 
-            this.#setCurrent(true)
+            this.#setVisible(true)
             this.#frame = 0
             this.advance()
         }
@@ -129,7 +142,7 @@ namespace slide {
                 this.advance()
             }
 
-            this.#setCurrent(false)
+            this.#setVisible(false)
         }
     }
 
