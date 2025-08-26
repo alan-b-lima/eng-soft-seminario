@@ -1,0 +1,99 @@
+@import url(./jfx-components.css);
+
+*,
+*::before,
+*::after,
+*::placeholder {
+	color: inherit;
+	box-sizing: border-box;
+	font: inherit;
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	color: var(--jfx-foreground);
+	font-family: var(--jfx-sans-serif-font);
+	/* font-size: 1.75rem; */
+}
+
+body {
+	display: grid;
+	grid-template-rows: 1fr auto;
+	height: 100dvh;
+	width: 100dvw;
+}
+
+@media print {
+	body {
+		height: auto !important;
+		width: auto !important;
+	}
+
+	.slide {
+		height: 100dvh !important;
+		max-width: 100dvw !important;
+	}
+}
+
+@media not print {
+	.slide:not(.current-slide) {
+		display: none !important;
+	}
+}
+
+.slide {
+	& {
+		background-color: var(--jfx-background)
+	}
+
+	&.home-page>.jfx-panel {
+		& {
+			display: grid;
+			gap: 1rem;
+			place-content: center;
+			font-size: 1.25rem;
+		}
+
+		h1 {
+			font-size: 2.5em;
+			text-align: center;
+		}
+
+		h2 {
+			display: flex;
+			justify-content: center;
+			gap: .25em;
+		}
+
+		span>.jfx-field {
+			& {
+				text-align: center;
+			}
+
+			&>div {
+				display: inline;
+			}
+
+			&>:nth-last-child(n + 3)::after {
+				content: ", ";
+			}
+
+			&>:nth-last-child(2)::after {
+				content: " e ";
+			}
+		}
+
+		span>div:last-child {
+			text-align: end;
+		}
+	}
+
+	&.final-page {
+		background-color: var(--jfx-background-selected);
+		color: var(--jfx-background-white);
+		padding: .25rem;
+		font-size: 1.25rem;
+		text-align: center;
+	}
+}
