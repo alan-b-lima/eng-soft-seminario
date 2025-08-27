@@ -1,99 +1,18 @@
-@import url(./jfx-components.css);
+/* Error: expected ")".
+ *     ,
+ * 165 |     background-image: linear-gradient($background-white 0%, $background 75%, $background-white 100%;
+ *     |                                                                                                    ^
+ *     '
+ *   _jfx-components.scss 165:100  @use
+ *   main.scss 2:1                 root stylesheet */
 
-*,
-*::before,
-*::after,
-*::placeholder {
-	color: inherit;
-	box-sizing: border-box;
-	font: inherit;
-	margin: 0;
-	padding: 0;
-}
-
-html {
-	color: var(--jfx-foreground);
-	font-family: var(--jfx-sans-serif-font);
-	/* font-size: 1.75rem; */
-}
-
-body {
-	display: grid;
-	grid-template-rows: 1fr auto;
-	height: 100dvh;
-	width: 100dvw;
-}
-
-@media print {
-	body {
-		height: auto !important;
-		width: auto !important;
-	}
-
-	.slide {
-		height: 100dvh !important;
-		max-width: 100dvw !important;
-	}
-}
-
-@media not print {
-	.slide:not(.current-slide) {
-		display: none !important;
-	}
-}
-
-.slide {
-	& {
-		background-color: var(--jfx-background)
-	}
-
-	&.home-page>.jfx-panel {
-		& {
-			display: grid;
-			gap: 1rem;
-			place-content: center;
-			font-size: 1.25rem;
-		}
-
-		h1 {
-			font-size: 2.5em;
-			text-align: center;
-		}
-
-		h2 {
-			display: flex;
-			justify-content: center;
-			gap: .25em;
-		}
-
-		span>.jfx-field {
-			& {
-				text-align: center;
-			}
-
-			&>div {
-				display: inline;
-			}
-
-			&>:nth-last-child(n + 3)::after {
-				content: ", ";
-			}
-
-			&>:nth-last-child(2)::after {
-				content: " e ";
-			}
-		}
-
-		span>div:last-child {
-			text-align: end;
-		}
-	}
-
-	&.final-page {
-		background-color: var(--jfx-background-selected);
-		color: var(--jfx-background-white);
-		padding: .25rem;
-		font-size: 1.25rem;
-		text-align: center;
-	}
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: 'Error: expected ")".\a     \2577 \a 165 \2502      background-image: linear-gradient($background-white 0%, $background 75%, $background-white 100%;\d\a     \2502                                                                                                     ^\a     \2575 \a   _jfx-components.scss 165:100  @use\a   main.scss 2:1                 root stylesheet';
 }

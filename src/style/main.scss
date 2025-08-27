@@ -1,0 +1,97 @@
+@use "reset";
+@use "jfx-components" as jfx;
+
+html {
+    color: jfx.$foreground;
+    font-family: jfx.$sans-serif-font;
+    // font-size: 1.75rem;
+}
+
+body {
+    @include reset.reset-chain();
+
+    display: grid;
+    grid-template-rows: 1fr auto;
+    height: 100dvh;
+    width: 100dvw;
+}
+
+@media print {
+    body {
+        height: auto !important;
+        width: auto !important;
+    }
+
+    .slide {
+        height: 100dvh !important;
+        max-width: 100dvw !important;
+    }
+}
+
+@media not print {
+    .slide:not(.current-slide) {
+        display: none !important;
+    }
+}
+
+.slide {
+    & {
+        background-color: jfx.$background;
+    }
+
+    &.home-slide>.jfx-panel {
+        & {
+            display: grid;
+            place-content: center;
+            font-size: 1.25rem;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            text-align: center;
+        }
+
+        h2 {
+            display: flex;
+            justify-content: center;
+            gap: .25em;
+        }
+
+        span>.jfx-field {
+            & {
+                text-align: center;
+            }
+
+            &>div {
+                display: inline;
+            }
+
+            &>:nth-last-child(n + 3)::after {
+                content: ", ";
+            }
+
+            &>:nth-last-child(2)::after {
+                content: " e ";
+            }
+        }
+
+        span>div:last-child {
+            text-align: end;
+        }
+    }
+
+    &.solid-slide>.jfx-panel {
+        h1 {
+            font-size: 3rem;
+        }
+    }
+
+    &.final-slide {
+        color: jfx.$background-white;
+        background-color: jfx.$background-selected;
+        font-size: 1.25rem;
+        text-align: center;
+        padding: .25rem;
+    }
+}
