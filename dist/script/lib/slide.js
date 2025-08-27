@@ -57,32 +57,43 @@ var slide;
     class Slide {
         #root;
         #animations;
+        #visible;
         #frame;
-        static CURRENT_CLASS_NAME = "current-slide";
+        static HIDE_SLIDE = (s) => {
+            s.root().classList.remove("current-slide");
+        };
+        static SHOW_SLIDE = (s) => {
+            s.root().classList.add("current-slide");
+        };
         constructor(root, ...animation) {
             this.#root = root;
             this.#animations = animation;
+            this.#visible = false;
             this.#frame = 0;
         }
         root() {
             return this.#root;
         }
-        #current() {
-            return this.#root.classList.contains(Slide.CURRENT_CLASS_NAME);
+        visible() {
+            return this.#visible;
         }
-        #setCurrent(visible) {
+        #setVisible(visible) {
+            this.#visible = visible;
             if (visible) {
-                this.#root.classList.add(Slide.CURRENT_CLASS_NAME);
+                Slide.SHOW_SLIDE(this);
             }
             else {
-                this.#root.classList.remove(Slide.CURRENT_CLASS_NAME);
+                Slide.HIDE_SLIDE(this);
             }
         }
+        frame() {
+            return this.#frame;
+        }
         enter() {
-            if (this.#current()) {
+            if (this.visible()) {
                 return;
             }
-            this.#setCurrent(true);
+            this.#setVisible(true);
             this.#frame = 0;
             this.advance();
         }
@@ -100,7 +111,7 @@ var slide;
             while (this.next()) {
                 this.advance();
             }
-            this.#setCurrent(false);
+            this.#setVisible(false);
         }
     }
     slide.Slide = Slide;

@@ -18,10 +18,19 @@ export function element<K extends keyof HTMLElementTagNameMap>(
 }
 
 export function style(style: { [K in keyof CSSStyleDeclaration]?: CSSStyleDeclaration[K] }): CSSStyleDeclaration {
-    const componentStyle = new CSSStyleDeclaration()
+    let computedStyle = ""
     for (const property in style) {
-        componentStyle[property] = style[property]!
+        computedStyle += `${camelCaseToDashSnakeCase(property)}:${style[property]};`
     }
 
-    return componentStyle
+    return computedStyle as any as CSSStyleDeclaration
+}
+
+function camelCaseToDashSnakeCase(identifier: string): string {
+    const matches = identifier.match(/([A-Z])?([a-z]+)/g)
+    if (matches === null) {
+        return ""
+    }
+
+    return matches.reduce((acc, s) => acc + "-" + s.toLowerCase())
 }
