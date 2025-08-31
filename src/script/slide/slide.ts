@@ -22,7 +22,7 @@ namespace slide {
             const selector = options.counterSelector ?? SlideShow.DefaultOptions.counterSelector
 
             for (let i = 0; i < this.#slides.length; i++) {
-                const counter = this.#slides[i].root().querySelectorAll(selector)
+                const counter = this.#slides[i].element().querySelectorAll(selector)
                 for (let i = 0; i < counter.length; i++) {
                     counter[i].textContent = `${i + 1}`
                 }
@@ -73,28 +73,28 @@ namespace slide {
     }
 
     export class Slide {
-        #root: HTMLElement
+        #element: HTMLElement
         #animations: Animation[]
         #visible: boolean
         #frame: number
 
         static HIDE_SLIDE = (s: Slide) => {
-            s.root().classList.remove("current-slide")
+            s.element().classList.remove("current-slide")
         }
         
         static SHOW_SLIDE = (s: Slide) => {
-            s.root().classList.add("current-slide")
+            s.element().classList.add("current-slide")
         }
 
-        constructor(root: HTMLElement, ...animation: Animation[]) {
-            this.#root = root
+        constructor(element: HTMLElement, ...animation: Animation[]) {
+            this.#element = element
             this.#animations = animation
             this.#visible = false
             this.#frame = 0
         }
 
-        root(): HTMLElement {
-            return this.#root
+        element(): HTMLElement {
+            return this.#element
         }
 
         visible(): boolean {

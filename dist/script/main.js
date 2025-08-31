@@ -1,7 +1,7 @@
-import { element } from "./lib/jsxmm.js";
-import slide from "./lib/slide.js";
-import { newJFXButton, newJFXField, newJFXMenu, newJFXPanel, newJFXWindow } from "./jfx-components.js";
-import { setupEventListenters } from "./listeners.js";
+import { element } from "./jsxmm/jsxmm.js";
+import slide from "./slide/slide.js";
+import { new_jfx_button, newJFXField, new_jfx_menu, new_jfx_panel, new_jfx_window } from "./jfx-components.js";
+import { setupEventListenters } from "./slide/listeners.js";
 function main() {
     const root = document.body;
     const panels = {
@@ -27,13 +27,13 @@ function main() {
     }();
     const slides = Object.keys(panels).map(option => {
         const [panel, animations] = panels[option];
-        const menuOption = menuOptions[option] ?? "--";
+        const menuOption = menuOptionMap[option] ?? "--";
         const page = newPage(windowTitle, menuOptions, menuOption, panel);
         page.classList.add(`${option}-slide`);
         return new slide.Slide(page, ...animations);
     });
     const ss = new slide.SlideShow({ startAt }, ...slides, new slide.Slide(element("div", { className: "slide final-slide" }, "Fim da Apresentação")));
-    root.append(...ss.slides().map(s => s.root()));
+    root.append(...ss.slides().map(s => s.element()));
     setupEventListenters(ss);
     const mo = new MutationObserver((mutations, observer) => {
         localStorage.setItem("current-page", `${ss.current()}`);
@@ -41,7 +41,7 @@ function main() {
     mo.observe(root, { attributeFilter: ["class"], childList: true, subtree: true });
 }
 function newPage(windowTitle, menuOptions, option, ...children) {
-    const page = newJFXWindow(windowTitle, newJFXMenu(menuOptions, option), ...children);
+    const page = (new_jfx_window(windowTitle, new_jfx_menu(menuOptions, option), ...children));
     page.classList.add("slide");
     return page;
 }
@@ -50,11 +50,22 @@ function newHomeSlide() {
         "Alan Lima", "Breno Augusto", "Juan Pablo",
         "Luan Filipe", "Mateus Oliveira", "Vitor Moises"
     ];
-    const panel = (newJFXPanel(element("h1", {}, "Seminário de Engenharia de Software I"), element("h2", {}, newJFXButton("Strategy"), newJFXButton("Diamante da Morte"), newJFXButton("Herança Negada"), newJFXButton("Extração de Interface")), element("span", {}, newJFXField(...names.map(n => element("div", {}, n))), element("div", {}, "Profª Kattiana Constantino"))));
+    const computedNameString = names.reduce((acc, v, i) => {
+        if (i < names.length - 1) {
+            return `${acc}, ${v}`;
+        }
+        return `${acc} e ${v}`;
+    });
+    const panel = (new_jfx_panel(element("h1", {}, "Seminário de Engenharia de Software I"), element("h2", {}, new_jfx_button("Strategy"), new_jfx_button("Diamante da Morte"), new_jfx_button("Herança Negada"), new_jfx_button("Extração de Interface")), element("span", {}, newJFXField(computedNameString), element("div", {}, "Profª Kattiana Constantino"))));
     return [panel, []];
 }
 function newSOLIDSlide() {
-    const panel = (newJFXPanel(element("h1", {}, "SOLID"), newJFXField(element("div", {}, "S"), element("div", {}, "Princípio da Resposabilidade Única"), element("div", {}, "O"), element("div", {}, "Princípio do Aberto/Fechado"), element("div", {}, "L"), element("div", {}, "Princípio da Substituição de Liskov"), element("div", {}, "I"), element("div", {}, "Princípio da Segregação de Interface"), element("div", {}, "D"), element("div", {}, "Princípio da Inversão de Dependência"))));
-    return [panel, [slide.emptyAction]];
+    const panel = (new_jfx_panel(element("h1", {}, "SOLID"), newJFXField(element("div", {}, "S"), element("div", {}, "Princípio da Resposabilidade Única"), element("div", {}, "O"), element("div", {}, "Princípio do Aberto/Fechado"), element("div", {}, "L"), element("div", {}, "Princípio da Substituição de Liskov"), element("div", {}, "I"), element("div", {}, "Princípio da Segregação de Interface"), element("div", {}, "D"), element("div", {}, "Princípio da Inversão de Dependência"))));
+    return [panel, [
+            ss => {
+            },
+            ss => {
+            },
+        ]];
 }
 window.addEventListener("DOMContentLoaded", main);

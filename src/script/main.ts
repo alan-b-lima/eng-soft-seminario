@@ -1,7 +1,7 @@
-import { element } from "./lib/jsxmm.js"
-import slide from "./lib/slide.js"
-import { newJFXButton, newJFXField, newJFXMenu, newJFXPanel, newJFXWindow } from "./jfx-components.js"
-import { setupEventListenters } from "./listeners.js"
+import { element } from "./jsxmm/jsxmm.js"
+import slide from "./slide/slide.js"
+import { new_jfx_button, newJFXField, new_jfx_menu, new_jfx_panel, new_jfx_window } from "./jfx-components.js"
+import { setupEventListenters } from "./slide/listeners.js"
 
 
 function main() {
@@ -35,7 +35,7 @@ function main() {
 
 	const slides = Object.keys(panels).map(option => {
 		const [panel, animations] = panels[option]
-		const menuOption = menuOptions[option] ?? "--"
+		const menuOption = menuOptionMap[option] ?? "--"
 
 		const page = newPage(windowTitle, menuOptions, menuOption, panel)
 		page.classList.add(`${option}-slide`)
@@ -48,7 +48,7 @@ function main() {
 		new slide.Slide(element("div", { className: "slide final-slide" }, "Fim da Apresentação"))
 	)
 
-	root.append(...ss.slides().map(s => s.root()))
+	root.append(...ss.slides().map(s => s.element()))
 	setupEventListenters(ss)
 
 	const mo = new MutationObserver((mutations: MutationRecord[], observer: MutationObserver): void => {
@@ -58,10 +58,11 @@ function main() {
 }
 
 function newPage(windowTitle: string, menuOptions: string[], option: string | number, ...children: (Node | string)[]) {
-	const page = newJFXWindow(
-		windowTitle,
-		newJFXMenu(menuOptions, option),
-		...children
+	const page = (
+		new_jfx_window(windowTitle,
+			new_jfx_menu(menuOptions, option),
+			...children
+		)
 	)
 
 	page.classList.add("slide")
@@ -74,17 +75,25 @@ function newHomeSlide(): [HTMLElement, slide.Animation[]] {
 		"Luan Filipe", "Mateus Oliveira", "Vitor Moises"
 	]
 
+	const computedNameString = names.reduce((acc, v, i) => {
+		if (i < names.length - 1) {
+			return `${acc}, ${v}`
+		}
+
+		return `${acc} e ${v}`
+	})
+
 	const panel = (
-		newJFXPanel(
+		new_jfx_panel(
 			element("h1", {}, "Seminário de Engenharia de Software I"),
 			element("h2", {},
-				newJFXButton("Strategy"),
-				newJFXButton("Diamante da Morte"),
-				newJFXButton("Herança Negada"),
-				newJFXButton("Extração de Interface"),
+				new_jfx_button("Strategy"),
+				new_jfx_button("Diamante da Morte"),
+				new_jfx_button("Herança Negada"),
+				new_jfx_button("Extração de Interface"),
 			),
 			element("span", {},
-				newJFXField(...names.map(n => element("div", {}, n))),
+				newJFXField(computedNameString),
 				element("div", {}, "Profª Kattiana Constantino"),
 			)
 		)
@@ -95,7 +104,7 @@ function newHomeSlide(): [HTMLElement, slide.Animation[]] {
 
 function newSOLIDSlide(): [HTMLElement, slide.Animation[]] {
 	const panel = (
-		newJFXPanel(
+		new_jfx_panel(
 			element("h1", {}, "SOLID"),
 			newJFXField(
 				element("div", {}, "S"), element("div", {}, "Princípio da Resposabilidade Única"),
@@ -107,7 +116,14 @@ function newSOLIDSlide(): [HTMLElement, slide.Animation[]] {
 		)
 	)
 
-	return [panel, [slide.emptyAction]]
+	return [panel, [
+		ss => {
+
+		},
+		ss => {
+
+		},
+	]]
 }
 
 window.addEventListener("DOMContentLoaded", main)

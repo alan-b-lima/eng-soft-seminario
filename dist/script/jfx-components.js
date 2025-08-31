@@ -1,29 +1,47 @@
-import { element } from "./lib/jsxmm.js";
-export function newJFXTitleBar(title) {
-    return (element("div", { className: "jfx-title" }, element("div", { className: "jfx-java-logo" }), element("div", { className: "jfx-window-name" }, title), element("div", { className: "jfx-windows-options" }, element("div", { className: "jfx-minimize" }), element("div", { className: "jfx-restore" }), element("div", { className: "jfx-close" }))));
+import { element } from "./jsxmm/jsxmm.js";
+export const Colors = {
+    background_white: "#ffffff",
+    background_highlight: "#9fb5c8",
+    background_selected: "#3d5c72",
+    background_dark: "#55585e",
+    background: "#d6d9df",
+    inactice_foreground: "#959b9e",
+    foreground: "#000000",
+    sans_serif_font: "system-ui, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    mono_space_font: "'Courier New', 'Consolas', Courier, monospace",
+    padding: ".25rem",
+    thin_border: "1px"
+};
+export function new_jfx_title_bar(title, maximized = true) {
+    return (element("div", { className: "jfx-title" }, element("div", { className: "jfx-java-logo" }), element("div", { className: "jfx-window-name" }, title), element("div", { className: "jfx-windows-options" }, element("div", { className: "jfx-minimize" }), element("div", { className: maximized ? "jfx-restore" : "jfx-maximize" }), element("div", { className: "jfx-close" }))));
 }
-export function newJFXWindow(title, ...children) {
-    return element("div", { className: "jfx-window" }, newJFXTitleBar(title), ...children);
+export function new_jfx_window(title, ...children) {
+    return element("div", { className: "jfx-window" }, new_jfx_title_bar(title), ...children);
 }
-export function newJFXMenu(options, index) {
+export function new_jfx_menu(options, index) {
     const comp = element("div", { className: "jfx-menu" }, ...options.map(o => element("div", { className: "jfx-menu-option" }, o)));
-    switch (typeof index) {
-        case "string":
-            index = options.findIndex(v => v === index);
-        case "number":
-            const option = comp.children[index];
-            if (option !== undefined) {
-                option.classList.add("selected");
-            }
-            break;
+    if (typeof index === "string") {
+        index = options.findIndex(v => v === index);
+    }
+    const option = comp.children[index];
+    if (option !== undefined) {
+        option.classList.add("selected");
     }
     return comp;
 }
-export function newJFXPanel(...children) {
+export function new_jfx_panel(...children) {
     return element("div", { className: "jfx-panel" }, ...children);
 }
-export function newJFXButton(text) {
-    return element("div", { className: "jfx-button" }, text);
+export function new_jfx_button(text) {
+    return element("div", {
+        style: {
+            backgroundImage: `linear-gradient(${Colors.background_white} 0%, ${Colors.background} 75%, ${Colors.background_white} 100%)`,
+            border: `${Colors.thin_border} solid ${Colors.background_highlight}`,
+            borderRadius: `.25rem`,
+            padding: `.25rem .75rem`,
+            textAlign: `center`,
+        }
+    }, text);
 }
 export function newJFXField(...children) {
     return element("div", { className: "jfx-field" }, ...children);
