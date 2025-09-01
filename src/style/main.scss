@@ -10,10 +10,12 @@ html {
 body {
     @include reset.reset-chain();
 
-    display: grid;
-    grid-template-rows: 1fr auto;
-    height: 100dvh;
-    width: 100dvw;
+    & {
+        display: grid;
+        grid-template-rows: 1fr auto;
+        height: 100dvh;
+        width: 100dvw;
+    }
 }
 
 @media print {
@@ -44,6 +46,7 @@ body {
             display: grid;
             place-content: center;
             font-size: 1.25rem;
+            padding: 1rem;
             gap: 1rem;
         }
 
@@ -55,25 +58,12 @@ body {
         h2 {
             display: flex;
             justify-content: center;
+            flex-wrap: wrap;
             gap: .25em;
         }
 
         span>.jfx-field {
-            & {
-                text-align: center;
-            }
-
-            &>div {
-                display: inline;
-            }
-
-            &>:nth-last-child(n + 3)::after {
-                content: ", ";
-            }
-
-            &>:nth-last-child(2)::after {
-                content: " e ";
-            }
+            text-align: center;
         }
 
         span>div:last-child {
@@ -81,9 +71,46 @@ body {
         }
     }
 
-    &.solid-slide>.jfx-panel {
-        h1 {
-            font-size: 3rem;
+    &.solid-slide {
+        .solid-principles {
+            & {
+                display: grid;
+                grid-template-columns: repeat(5, 1fr);
+                justify-content: center;
+                transition: scale .25s ease-in-out;
+                padding: 4rem;
+                gap: 2rem;
+            }
+
+            .solid-principle {
+                & {
+                    display: grid;
+                    grid-template-columns: auto 1fr;
+                    transition: scale .25s ease-in-out;
+                    padding: .5rem;
+                    gap: .5rem;
+                }
+
+                .solid-letter {
+                    font-family: jfx.$mono-space-font;
+                    font-size: 3rem;
+                }
+
+                .solid-statement {
+                    display: flex;
+                    align-items: center;
+                    transition: scale .125s ease-in-out;
+                    scale: 0;
+                }
+            }
+
+            .solid-principle.highlight {
+                .solid-statement {
+                    display: flex;
+                    align-items: center;
+                    scale: 1;
+                }
+            }
         }
     }
 

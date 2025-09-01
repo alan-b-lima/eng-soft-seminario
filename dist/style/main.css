@@ -3,17 +3,6 @@
   color: #000000;
   font-family: system-ui, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
-.jfx-window,
-.jfx-window *,
-.jfx-window *::before,
-.jfx-window *::after {
-  box-sizing: border-box;
-  color: inherit;
-  font: inherit;
-  border: none;
-  padding: 0;
-  margin: 0;
-}
 
 .jfx-window:has(.jfx-title) {
   display: grid;
@@ -127,6 +116,14 @@
   rotate: -45deg;
 }
 
+.jfx-button {
+  background-image: linear-gradient(#ffffff 0%, #d6d9df 75%, #ffffff 100%);
+  border: 1px solid #9fb5c8;
+  border-radius: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  text-align: center;
+}
+
 .jfx-field {
   background: #ffffff;
   border-image-slice: 1;
@@ -137,13 +134,13 @@
   position: relative;
 }
 .jfx-field::before {
-  background-image: linear-gradient(#b8b8b9, transparent);
   content: "";
-  height: 0.25rem;
-  left: 0;
+  background-image: linear-gradient(#b8b8b9, transparent);
   position: absolute;
-  top: 0;
+  height: 0.25rem;
   width: 100%;
+  left: 0;
+  top: 0;
 }
 
 html {
@@ -151,12 +148,6 @@ html {
   font-family: system-ui, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-body {
-  display: grid;
-  grid-template-rows: 1fr auto;
-  height: 100dvh;
-  width: 100dvw;
-}
 body,
 body *,
 body *::before,
@@ -167,6 +158,12 @@ body *::after {
   border: none;
   padding: 0;
   margin: 0;
+}
+body {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  height: 100dvh;
+  width: 100dvw;
 }
 
 @media print {
@@ -205,18 +202,40 @@ body *::after {
   gap: 0.25em;
 }
 .slide.home-slide > .jfx-panel span > .jfx-field {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.slide.home-slide > .jfx-panel span > .jfx-field > div {
-  display: inline;
+  text-align: center;
 }
 .slide.home-slide > .jfx-panel span > div:last-child {
   text-align: end;
 }
-.slide.solid-slide > .jfx-panel h1 {
+.slide.solid-slide .solid-principles {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  justify-content: center;
+  transition: scale 0.25s ease-in-out;
+  padding: 4rem;
+  gap: 2rem;
+}
+.slide.solid-slide .solid-principles .solid-principle {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  transition: scale 0.25s ease-in-out;
+  padding: 0.5rem;
+  gap: 0.5rem;
+}
+.slide.solid-slide .solid-principles .solid-principle .solid-letter {
+  font-family: "Consolas", Courier, monospace;
   font-size: 3rem;
+}
+.slide.solid-slide .solid-principles .solid-principle .solid-statement {
+  display: flex;
+  align-items: center;
+  transition: scale 0.125s ease-in-out;
+  scale: 0;
+}
+.slide.solid-slide .solid-principles .solid-principle.highlight .solid-statement {
+  display: flex;
+  align-items: center;
+  scale: 1;
 }
 .slide.final-slide {
   color: #ffffff;
