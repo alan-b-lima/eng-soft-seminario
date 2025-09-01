@@ -1,7 +1,7 @@
 import { ListenerLock } from "./lock.js";
-export function setupEventListenters(ss, tree) {
-    const keydownLock = new ListenerLock(navigationKeydownListener.bind(null, ss));
-    const clickLock = new ListenerLock(navigationClickListener.bind(null, ss));
+export function setup_event_listenters(ss, tree) {
+    const keydownLock = new ListenerLock(navigation_keydown_listener.bind(null, ss));
+    const clickLock = new ListenerLock(navigation_click_listener.bind(null, ss));
     const lock = {
         lock: () => { keydownLock.lock(); clickLock.lock(); },
         unlock: () => { keydownLock.unlock(); clickLock.unlock(); },
@@ -10,41 +10,34 @@ export function setupEventListenters(ss, tree) {
     window.addEventListener("keydown", keydownLock.listener());
     window.addEventListener("click", clickLock.listener());
     if (tree !== undefined) {
-        window.addEventListener("keydown", escapeKeydownListener(lock, tree));
+        window.addEventListener("keydown", escape_keydown_listener(lock, tree));
     }
     return lock;
 }
-function navigationKeydownListener(ss, evt) {
+function navigation_keydown_listener(ss, evt) {
     switch (evt.key) {
         case "PageUp":
         case "ArrowUp":
         case "ArrowLeft":
-            {
-                ss.revert();
-            }
+            ss.revert();
             break;
         case "PageDown":
         case "ArrowDown":
         case "ArrowRight":
-            {
-                ss.advance();
-            }
+            ss.advance();
             break;
         case "Home":
-            {
-                ss.goto(0);
-            }
+            ss.goto(0);
             break;
         case "End":
-            {
-                ss.goto(ss.length() - 1);
-            }
+            ss.goto(ss.length() - 1);
             break;
-        default: return;
+        default:
+            return;
     }
     evt.preventDefault();
 }
-function navigationClickListener(ss, evt) {
+function navigation_click_listener(ss, evt) {
     const THRESHOLD_FOR_REVERT = 0.10;
     if (evt.screenX / window.innerWidth >= THRESHOLD_FOR_REVERT) {
         ss.advance();
@@ -53,42 +46,43 @@ function navigationClickListener(ss, evt) {
         ss.revert();
     }
 }
-function escapeKeydownListener(lock, tree) {
-    let node;
+function escape_keydown_listener(lock, root) {
+    let node = root;
     return (evt) => {
         if (!lock.locked()) {
-            if (evt.key === "b") {
-                node = tree;
-                lock.lock();
+            if (evt.key !== "b") {
+                return;
             }
-            return;
+            if (node instanceof Function) {
+                node();
+                lock.unlock();
+                node = root;
+            }
         }
         switch (evt.key) {
             case "b":
-                {
-                    lock.unlock();
-                }
+                lock.unlock();
+                node = root;
                 return;
             case "PageUp":
             case "ArrowUp":
             case "ArrowLeft":
-                {
-                    evt.preventDefault();
-                    node = node[0];
-                }
+            case "Home":
+                node = node[0];
                 break;
             case "PageDown":
             case "ArrowDown":
             case "ArrowRight":
-                {
-                    evt.preventDefault();
-                    node = node[1];
-                }
+            case "End":
+                node = node[1];
                 break;
+            default:
+                return;
         }
         if (node instanceof Function) {
             node();
             lock.unlock();
+            node = root;
         }
     };
 }

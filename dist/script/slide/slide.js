@@ -1,18 +1,18 @@
 var slide;
-(function (slide) {
+(function (slide_1) {
     class SlideShow {
         #slides;
         #current;
-        static DefaultOptions = {
-            startAt: 0,
-            counterSelector: ".counter",
+        static DEFAULT_OPTIONS = {
+            start_at: 0,
+            counter_selector: ".counter",
         };
         constructor(options, ...slides) {
             if (slides.length === 0) {
                 throw new Error("empty slide show");
             }
             this.#slides = slides;
-            const selector = options.counterSelector ?? SlideShow.DefaultOptions.counterSelector;
+            const selector = options.counter_selector ?? SlideShow.DEFAULT_OPTIONS.counter_selector;
             for (let i = 0; i < this.#slides.length; i++) {
                 const counter = this.#slides[i].element().querySelectorAll(selector);
                 for (let i = 0; i < counter.length; i++) {
@@ -20,7 +20,7 @@ var slide;
                 }
             }
             this.#current = -1;
-            this.goto(options.startAt ?? SlideShow.DefaultOptions.startAt);
+            this.goto(options.start_at ?? SlideShow.DEFAULT_OPTIONS.start_at);
         }
         slides() {
             return this.#slides;
@@ -44,32 +44,50 @@ var slide;
         }
         advance() {
             const current = this.#slides[this.#current];
-            if (!current.next()) {
+            if (current.done()) {
                 this.goto(this.#current + 1);
+                current.advance();
+                return;
             }
             current.advance();
+            if (current.done()) {
+                this.goto(this.#current + 1);
+            }
         }
         revert() {
-            this.goto(this.#current - 1);
+            const slide = this.#slides[this.#current];
+            if (slide.frame() > 1) {
+                slide.revert();
+            }
+            else {
+                this.goto(this.#current - 1);
+            }
         }
     }
-    slide.SlideShow = SlideShow;
+    slide_1.SlideShow = SlideShow;
     class Slide {
         #element;
-        #animations;
+        #animation;
         #visible;
         #frame;
+        #generator;
+        #done;
         static HIDE_SLIDE = (s) => {
             s.element().classList.remove("current-slide");
         };
         static SHOW_SLIDE = (s) => {
             s.element().classList.add("current-slide");
         };
-        constructor(element, ...animation) {
+        constructor(element, animation) {
+            if (animation === undefined) {
+                animation = function* () { };
+            }
             this.#element = element;
-            this.#animations = animation;
+            this.#animation = animation;
             this.#visible = false;
             this.#frame = 0;
+            this.#generator = animation();
+            this.#done = false;
         }
         element() {
             return this.#element;
@@ -77,53 +95,54 @@ var slide;
         visible() {
             return this.#visible;
         }
-        #setVisible(visible) {
-            this.#visible = visible;
-            if (visible) {
-                Slide.SHOW_SLIDE(this);
-            }
-            else {
-                Slide.HIDE_SLIDE(this);
-            }
-        }
         frame() {
             return this.#frame;
         }
         enter() {
-            if (this.visible()) {
-                return;
+            if (!this.#visible) {
+                Slide.SHOW_SLIDE(this);
+                this.#visible = true;
             }
-            this.#setVisible(true);
+            this.#generator = this.#animation();
+            this.#done = false;
             this.#frame = 0;
             this.advance();
         }
-        next() {
-            return this.#frame < this.#animations.length;
+        done() {
+            return this.#done;
         }
         advance() {
-            if (!this.next()) {
+            if (!this.#visible) {
                 return;
             }
-            this.#animations[this.#frame](this);
-            this.#frame++;
+            const { done } = this.#generator.next();
+            if (done === true) {
+                this.#done = true;
+            }
+            else {
+                this.#frame++;
+            }
         }
-        leave() {
-            while (this.next()) {
+        revert() {
+            if (!this.#visible) {
+                return;
+            }
+            const frame = this.#frame - 1;
+            this.enter();
+            for (let i = 1; i < frame; i++) {
                 this.advance();
             }
-            this.#setVisible(false);
+        }
+        leave() {
+            while (!this.#done) {
+                this.advance();
+            }
+            Slide.HIDE_SLIDE(this);
+            this.#visible = false;
         }
     }
-    slide.Slide = Slide;
-    function bundleActions(...actions) {
-        return (s) => {
-            for (let i = 0; i < actions.length; i++) {
-                actions[i](s);
-            }
-        };
-    }
-    slide.bundleActions = bundleActions;
-    function emptyAction(s) { }
-    slide.emptyAction = emptyAction;
+    slide_1.Slide = Slide;
+    function empty_action(s) { }
+    slide_1.empty_action = empty_action;
 })(slide || (slide = {}));
 export default slide;

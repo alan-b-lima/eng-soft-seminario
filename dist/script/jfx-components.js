@@ -43,6 +43,6 @@ export function new_jfx_button(text) {
         }
     }, text);
 }
-export function newJFXField(...children) {
+export function new_jfx_field(...children) {
     return element("div", { className: "jfx-field" }, ...children);
 }

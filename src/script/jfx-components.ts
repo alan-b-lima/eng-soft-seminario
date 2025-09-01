@@ -68,6 +68,6 @@ export function new_jfx_button(text: string) {
     }, text)
 }
 
-export function newJFXField(...children: (Node | string)[]) {
+export function new_jfx_field(...children: (Node | string)[]) {
     return element("div", { className: "jfx-field" }, ...children)
 }

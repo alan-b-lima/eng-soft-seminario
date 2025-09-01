@@ -1,16 +1,16 @@
 namespace slide {
     export type Options = {
-        startAt: number,
-        counterSelector: string,
+        start_at: number,
+        counter_selector: string,
     }
 
     export class SlideShow {
         #slides: Slide[]
         #current: number
 
-        static DefaultOptions: Options = {
-            startAt: 0,
-            counterSelector: ".counter",
+        static DEFAULT_OPTIONS: Options = {
+            start_at: 0,
+            counter_selector: ".counter",
         }
 
         constructor(options: { [K in keyof Options]?: Options[K] }, ...slides: Slide[]) {
@@ -19,7 +19,7 @@ namespace slide {
             }
 
             this.#slides = slides
-            const selector = options.counterSelector ?? SlideShow.DefaultOptions.counterSelector
+            const selector = options.counter_selector ?? SlideShow.DEFAULT_OPTIONS.counter_selector
 
             for (let i = 0; i < this.#slides.length; i++) {
                 const counter = this.#slides[i].element().querySelectorAll(selector)
@@ -29,7 +29,7 @@ namespace slide {
             }
 
             this.#current = -1
-            this.goto(options.startAt ?? SlideShow.DefaultOptions.startAt)
+            this.goto(options.start_at ?? SlideShow.DEFAULT_OPTIONS.start_at)
         }
 
         slides(): Slide[] {
@@ -60,37 +60,58 @@ namespace slide {
 
         advance(): void {
             const current = this.#slides[this.#current]
-            if (!current.next()) {
+            if (current.done()) {
                 this.goto(this.#current + 1)
+                current.advance()
+
+                return
             }
 
             current.advance()
+            if (current.done()) {
+                this.goto(this.#current + 1)
+            }
         }
 
         revert(): void {
-            this.goto(this.#current - 1)
+            const slide = this.#slides[this.#current]
+            if (slide.frame() > 1) {
+                slide.revert()
+            } else {
+                this.goto(this.#current - 1)
+            }
         }
     }
 
     export class Slide {
         #element: HTMLElement
-        #animations: Animation[]
+        #animation: Animation
         #visible: boolean
         #frame: number
+
+        #generator: ReturnType<Animation>
+        #done: boolean
 
         static HIDE_SLIDE = (s: Slide) => {
             s.element().classList.remove("current-slide")
         }
-        
+
         static SHOW_SLIDE = (s: Slide) => {
             s.element().classList.add("current-slide")
         }
 
-        constructor(element: HTMLElement, ...animation: Animation[]) {
+        constructor(element: HTMLElement, animation?: Animation) {
+            if (animation === undefined) {
+                animation = function* () { }
+            }
+
             this.#element = element
-            this.#animations = animation
+            this.#animation = animation
             this.#visible = false
             this.#frame = 0
+
+            this.#generator = animation()
+            this.#done = false
         }
 
         element(): HTMLElement {
@@ -101,64 +122,64 @@ namespace slide {
             return this.#visible
         }
 
-        #setVisible(visible: boolean): void {
-            this.#visible = visible
-            if (visible) {
-                Slide.SHOW_SLIDE(this)
-            } else {
-                Slide.HIDE_SLIDE(this)
-            }
-        }
-
         frame(): number {
             return this.#frame
         }
 
         enter(): void {
-            if (this.visible()) {
-                return
+            if (!this.#visible) {
+                Slide.SHOW_SLIDE(this)
+                this.#visible = true
             }
 
-            this.#setVisible(true)
+            this.#generator = this.#animation()
+            this.#done = false
             this.#frame = 0
             this.advance()
         }
 
-        next(): boolean {
-            return this.#frame < this.#animations.length
+        done(): boolean {
+            return this.#done
         }
 
         advance(): void {
-            if (!this.next()) {
+            if (!this.#visible) {
                 return
             }
 
-            this.#animations[this.#frame](this)
-            this.#frame++
+            const { done } = this.#generator.next()
+            if (done === true) {
+                this.#done = true
+            } else {
+                this.#frame++
+            }
+        }
+
+        revert(): void {
+            if (!this.#visible) {
+                return
+            }
+
+            const frame = this.#frame - 1
+            this.enter()
+            for (let i = 1; i < frame; i++) {
+                this.advance()
+            }
         }
 
         leave(): void {
-            while (this.next()) {
+            while (!this.#done) {
                 this.advance()
             }
 
-            this.#setVisible(false)
+            Slide.HIDE_SLIDE(this)
+            this.#visible = false
         }
     }
 
-    export type Animation = Action
+    export type Animation = () => Generator<void, void, void>
 
-    export type Action = (s: Slide) => void
-
-    export function bundleActions(...actions: Action[]): Action {
-        return (s: Slide) => {
-            for (let i = 0; i < actions.length; i++) {
-                actions[i](s)
-            }
-        }
-    }
-
-    export function emptyAction(s: Slide): void { }
+    export function empty_action(s: Slide): void { }
 }
 
 export default slide
