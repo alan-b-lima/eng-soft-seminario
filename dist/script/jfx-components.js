@@ -15,8 +15,8 @@ export const Colors = {
 export function new_jfx_title_bar(title, maximized = true) {
     return (element("div", { className: "jfx-title" }, element("div", { className: "jfx-java-logo" }), element("div", { className: "jfx-window-name" }, title), element("div", { className: "jfx-windows-options" }, element("div", { className: "jfx-minimize" }), element("div", { className: maximized ? "jfx-restore" : "jfx-maximize" }), element("div", { className: "jfx-close" }))));
 }
-export function new_jfx_window(title, ...children) {
-    return element("div", { className: "jfx-window" }, new_jfx_title_bar(title), ...children);
+export function new_jfx_window(title, maximized = true, ...children) {
+    return element("div", { className: "jfx-window" }, new_jfx_title_bar(title, maximized), ...children);
 }
 export function new_jfx_menu(options, index) {
     const comp = element("div", { className: "jfx-menu" }, ...options.map(o => element("div", { className: "jfx-menu-option" }, o)));

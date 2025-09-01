@@ -1,4 +1,4 @@
-import { element } from "./jsxmm/jsxmm.js"
+import { element } from "./jsxmm/jsxmm.ts"
 
 export const Colors = {
     background_white: "#ffffff",
@@ -28,9 +28,9 @@ export function new_jfx_title_bar(title: string, maximized: boolean = true) {
     )
 }
 
-export function new_jfx_window(title: string, ...children: (Node | string)[]) {
+export function new_jfx_window(title: string, maximized: boolean = true, ...children: (Node | string)[]) {
     return element("div", { className: "jfx-window" },
-        new_jfx_title_bar(title),
+        new_jfx_title_bar(title, maximized),
         ...children
     )
 }
