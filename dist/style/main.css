@@ -22,7 +22,7 @@
   border-top: 1px solid #9fb5c8;
 }
 .jfx-menu .jfx-menu-option {
-  padding: 0 0.5rem;
+  padding: 0.125rem 0.5rem;
   text-align: center;
 }
 .jfx-menu .jfx-menu-option.selected {
