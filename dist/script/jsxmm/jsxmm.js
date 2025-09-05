@@ -4,6 +4,9 @@ export function element(tag, properties = {}, ...children) {
     element.append(...children);
     return element;
 }
+export function style(element, style) {
+    replace(element.style, style);
+}
 function replace(base, replacement) {
     for (const key in replacement) {
         if (!(key in base)) {
