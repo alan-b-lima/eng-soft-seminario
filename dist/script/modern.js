@@ -10,4 +10,23 @@ function format_duration(duration_ms) {
         hours, minutes, seconds
     });
 }
+export class Ticker {
+    #id;
+    constructor() {
+        this.#id = null;
+    }
+    start(callback, timeout) {
+        if (this.#id !== null) {
+            return;
+        }
+        this.#id = setInterval(callback);
+    }
+    stop() {
+        if (this.#id === null) {
+            return;
+        }
+        clearInterval(this.#id);
+        this.#id = null;
+    }
+}
 export { format_duration };

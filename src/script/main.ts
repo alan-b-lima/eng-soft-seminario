@@ -1,144 +1,93 @@
-import { element } from "./jsxmm/jsxmm.js"
-import slide from "./slide/slide.js"
-import { new_jfx_button, new_jfx_field, new_jfx_menu, new_jfx_panel, new_jfx_window } from "./jfx-components.js"
-import { ChoiceTree, setup_event_listenters } from "./slide/listeners.js"
+import { jfx } from "./jfx-components.ts"
+import { element, style } from "./jsxmm/jsxmm.ts"
+import { format_duration, Ticker } from "./modern.ts"
+import { ChoiceTree, setup_event_listenters } from "./sspm/listeners.ts"
+import sspm from "./sspm/slide.ts"
+import slides from "./slides/slides.ts"
 
 function main() {
-	const WINDOW_TITLE = "Seminário de Engenharia de Software I"
 	const ROOT = document.body
 
-	const MENU_OPTIONS: Record<string, string> = {
-		home: "Início",
-		solid: "SOLID",
+	const page_number_str = localStorage.getItem("current-page")
+	let start_at = 0
+
+	if (page_number_str !== null) {
+		const page_number = +page_number_str
+		if (!Number.isNaN(page_number)) {
+			start_at = page_number
+		}
 	}
 
-	const slides: slide.Slide[] = [
-		new_home_slide(WINDOW_TITLE, MENU_OPTIONS, "home"),
-		new_solid_slide(WINDOW_TITLE, MENU_OPTIONS, "solid"),
-	]
-
-	const start_at = function () {
-		const page = localStorage.getItem("current-page")
-		if (page === null) {
-			return 0
-		}
-
-		const index = +page
-		if (Number.isNaN(index)) {
-			return 0
-		}
-
-		return index
-	}()
-
-	const ss = new slide.SlideShow({ start_at },
-		...slides,
-		new slide.Slide(element("div", { className: "slide final-slide" }, "Fim da Apresentação"))
-	)
-
+	const ss = new sspm.SlideShow({ start_at }, ...slides)
 	ROOT.append(...ss.slides().map(s => s.element()))
 
-	setup_event_listenters(ss, () => {
-		const popup = element("div", {
-			style: {
-				display: "grid",
-				placeItems: "center",
-				position: "absolute",
-				width: "100dvw",
-				height: "100dvh",
-				overflow: "hidden",
-				zIndex: "1",
-				backgroundColor: "red",
-			}
-		}, `${ss.current()}`)
-
-		document.documentElement.prepend(popup)
-		setTimeout(() => {
-			popup.remove()
-		}, 1000);
-	})
-
-	const mo = new MutationObserver((mutations: MutationRecord[], observer: MutationObserver): void => {
+	const listeners = setup_event_listenters(ss, new_choice_tree(ss))
+	listeners.attach(new Callback(() => {
 		localStorage.setItem("current-page", `${ss.current()}`)
-	})
-	mo.observe(ROOT, { attributeFilter: ["class"], childList: true, subtree: true })
+		console.log(ss.current())
+	}))
 }
 
-function new_home_slide(window_title: string, options: Record<string, string>, option: string): slide.Slide {
-	const names = [
-		"Alan Lima", "Breno Augusto", "Juan Pablo",
-		"Luan Filipe", "Mateus Oliveira", "Vitor Moises"
-	]
+class Callback implements Observer {
+	#callback: () => void
 
-	const slide_window = (
-		new_jfx_window(window_title,
-			new_jfx_menu(Object.values(options), options[option]),
-			new_jfx_panel(
-				element("h1", {}, "Seminário de Engenharia de Software I"),
-				element("h2", {},
-					new_jfx_button("Strategy"),
-					new_jfx_button("Diamante da Morte"),
-					new_jfx_button("Herança Negada"),
-					new_jfx_button("Extração de Interface"),
-				),
-				element("span", {},
-					new_jfx_field(
-						`${names.slice(0, -1).reduce((acc, v) => `${acc}, ${v}`)} e ${names[names.length - 1]}`
-					),
-					element("div", {}, "Profª Kattiana Constantino"),
-				)
-			)
-		)
-	)
+	constructor(callback: () => void) {
+		this.#callback = callback
+	}
 
-	slide_window.classList.add("slide", `${option}-slide`)
-	return new slide.Slide(slide_window)
+	update() {
+		this.#callback()
+	}
 }
 
-function new_solid_slide(window_title: string, options: Record<string, string>, option: string): slide.Slide {
-	const SOLID = [
-		["S", "Princípio da Resposabilidade Única"],
-		["O", "Princípio do Aberto/Fechado"],
-		["L", "Princípio da Substituição de Liskov"],
-		["I", "Princípio da Segregação de Interface"],
-		["D", "Princípio da Inversão de Dependência"],
-	]
+function new_choice_tree(ss: sspm.SlideShow): ChoiceTree {
+	const time = {
+		start: performance.now()
+	}
 
-	const principles = SOLID.map(([letter, statement]) => {
-		return (
-			element("div", { className: "solid-principle" },
-				element("div", { className: "solid-letter" }, letter),
-				(() => {
-					const field = new_jfx_field(statement)
-					field.classList.add("solid-statement")
-					return field
-				})()
-			)
-		)
+	const page_number_element = jfx.new_field()
+	const elapsed_time_element = jfx.new_field()
+
+	page_number_element.style.display = "inline"
+	elapsed_time_element.style.display = "inline"
+
+	const panel = jfx.new_panel(
+		element("div", {}, `Slide `, page_number_element, ` de ${ss.length()}`),
+		element("div", {}, `Tempo decorrido: `, elapsed_time_element),
+	)
+	style(panel, {
+		display: "grid",
+		padding: "2rem",
+		fontSize: "1.25rem",
+		gap: "1rem",
 	})
 
-	const principles_panel = new_jfx_panel(...principles)
-	principles_panel.classList.add("solid-principles")
-
-	const slide_window = (
-		new_jfx_window(window_title,
-			new_jfx_menu(Object.values(options), options[option]),
-			principles_panel
-		)
+	const dialog_box = element("dialog", {},
+		jfx.new_window("Informação", false, panel)
 	)
+	style(dialog_box, { padding: "0" })
 
-	slide_window.classList.add("slide", `${option}-slide`)
-	return new slide.Slide(slide_window, function* () {
-		principles.forEach(principle => principle.classList.remove("highlight"))
-		yield
+	document.documentElement.append(dialog_box)
 
-		for (let i = 0; i < principles.length; i++) {
-			principles[i].classList.add("highlight")
-			yield
+	const ticker = new Ticker()
 
-			principles[i].classList.remove("highlight")
+	return [
+		() => { time.start = performance.now() },
+		() => {
+			if (!dialog_box.open) {
+				ticker.start(() => {
+					const elapsed_time = performance.now() - time.start
+					
+					page_number_element.textContent = `${ss.current() + 1}`
+					elapsed_time_element.textContent = format_duration(elapsed_time)
+				}, 100)
+				dialog_box.showModal()
+			} else {
+				dialog_box.close()
+				ticker.stop()
+			}
 		}
-	})
+	]
 }
 
 window.addEventListener("DOMContentLoaded", main)

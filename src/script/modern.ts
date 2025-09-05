@@ -13,4 +13,29 @@ function format_duration(duration_ms: number): string {
     })
 }
 
+export class Ticker {
+    #id: number | null
+
+    constructor() {
+        this.#id = null
+    }
+
+    start(callback: () => void, timeout: number): void {
+        if (this.#id !== null) {
+            return
+        }
+
+        this.#id = setInterval(callback)
+    }
+
+    stop(): void {
+        if (this.#id === null) {
+            return
+        }
+
+        clearInterval(this.#id)
+        this.#id = null
+    }
+}
+
 export { format_duration }
