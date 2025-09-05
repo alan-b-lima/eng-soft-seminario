@@ -1,4 +1,4 @@
-namespace slide {
+namespace sspm {
     export type Options = {
         start_at: number,
         counter_selector: string,
@@ -13,7 +13,7 @@ namespace slide {
             counter_selector: ".counter",
         }
 
-        constructor(options: { [K in keyof Options]?: Options[K] }, ...slides: Slide[]) {
+        constructor(options: Partial<Options>, ...slides: Slide[]) {
             if (slides.length === 0) {
                 throw new Error("empty slide show")
             }
@@ -77,9 +77,10 @@ namespace slide {
             const slide = this.#slides[this.#current]
             if (slide.frame() > 1) {
                 slide.revert()
-            } else {
-                this.goto(this.#current - 1)
+                return
             }
+
+            this.goto(this.#current - 1)
         }
     }
 
@@ -102,7 +103,7 @@ namespace slide {
 
         constructor(element: HTMLElement, animation?: Animation) {
             if (animation === undefined) {
-                animation = function* () { }
+                animation = empty_generator
             }
 
             this.#element = element
@@ -116,6 +117,16 @@ namespace slide {
 
         element(): HTMLElement {
             return this.#element
+        }
+
+        animation(animation?: Animation): Animation {
+            if (animation !== undefined) {
+                const old = this.#animation
+                this.#animation = animation
+                return old
+            }
+
+            return this.#animation
         }
 
         visible(): boolean {
@@ -179,7 +190,7 @@ namespace slide {
 
     export type Animation = () => Generator<void, void, void>
 
-    export function empty_action(s: Slide): void { }
+    function* empty_generator() { }
 }
 
-export default slide
+export default sspm

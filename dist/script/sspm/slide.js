@@ -1,5 +1,5 @@
-var slide;
-(function (slide_1) {
+var sspm;
+(function (sspm) {
     class SlideShow {
         #slides;
         #current;
@@ -58,13 +58,12 @@ var slide;
             const slide = this.#slides[this.#current];
             if (slide.frame() > 1) {
                 slide.revert();
+                return;
             }
-            else {
-                this.goto(this.#current - 1);
-            }
+            this.goto(this.#current - 1);
         }
     }
-    slide_1.SlideShow = SlideShow;
+    sspm.SlideShow = SlideShow;
     class Slide {
         #element;
         #animation;
@@ -80,7 +79,7 @@ var slide;
         };
         constructor(element, animation) {
             if (animation === undefined) {
-                animation = function* () { };
+                animation = empty_generator;
             }
             this.#element = element;
             this.#animation = animation;
@@ -91,6 +90,14 @@ var slide;
         }
         element() {
             return this.#element;
+        }
+        animation(animation) {
+            if (animation !== undefined) {
+                const old = this.#animation;
+                this.#animation = animation;
+                return old;
+            }
+            return this.#animation;
         }
         visible() {
             return this.#visible;
@@ -141,8 +148,7 @@ var slide;
             this.#visible = false;
         }
     }
-    slide_1.Slide = Slide;
-    function empty_action(s) { }
-    slide_1.empty_action = empty_action;
-})(slide || (slide = {}));
-export default slide;
+    sspm.Slide = Slide;
+    function* empty_generator() { }
+})(sspm || (sspm = {}));
+export default sspm;

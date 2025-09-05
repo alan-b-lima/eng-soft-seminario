@@ -1,18 +1,48 @@
-import { ListenerLock } from "./lock.js";
+import { Listener } from "./lock.js";
 export function setup_event_listenters(ss, tree) {
-    const keydownLock = new ListenerLock(navigation_keydown_listener.bind(null, ss));
-    const clickLock = new ListenerLock(navigation_click_listener.bind(null, ss));
-    const lock = {
-        lock: () => { keydownLock.lock(); clickLock.lock(); },
-        unlock: () => { keydownLock.unlock(); clickLock.unlock(); },
-        locked: () => { return clickLock.locked() || keydownLock.locked(); },
-    };
-    window.addEventListener("keydown", keydownLock.listener());
-    window.addEventListener("click", clickLock.listener());
+    const keydown_lock = new Listener(navigation_keydown_listener.bind(null, ss));
+    const click_lock = new Listener(navigation_click_listener.bind(null, ss));
+    window.addEventListener("keydown", keydown_lock.listener());
+    window.addEventListener("click", click_lock.listener());
+    const bundle = new ListenerBundle(keydown_lock, click_lock);
     if (tree !== undefined) {
-        window.addEventListener("keydown", escape_keydown_listener(lock, tree));
+        window.addEventListener("keydown", escape_keydown_listener(bundle, tree));
     }
-    return lock;
+    return bundle;
+}
+class ListenerBundle {
+    #listeners;
+    constructor(...listeners) {
+        this.#listeners = listeners;
+    }
+    attach(ob) {
+        for (let i = 0; i < this.#listeners.length; i++) {
+            this.#listeners[i].attach(ob);
+        }
+    }
+    detach(ob) {
+        for (let i = 0; i < this.#listeners.length; i++) {
+            this.#listeners[i].detach(ob);
+        }
+    }
+    notify() {
+        for (let i = 0; i < this.#listeners.length; i++) {
+            this.#listeners[i].notify();
+        }
+    }
+    lock() {
+        for (let i = 0; i < this.#listeners.length; i++) {
+            this.#listeners[i].lock();
+        }
+    }
+    unlock() {
+        for (let i = 0; i < this.#listeners.length; i++) {
+            this.#listeners[i].unlock();
+        }
+    }
+    locked() {
+        return this.#listeners.length > 0 && this.#listeners[0].locked();
+    }
 }
 function navigation_keydown_listener(ss, evt) {
     switch (evt.key) {
@@ -53,11 +83,13 @@ function escape_keydown_listener(lock, root) {
             if (evt.key !== "b") {
                 return;
             }
+            lock.lock();
             if (node instanceof Function) {
                 node();
                 lock.unlock();
                 node = root;
             }
+            return;
         }
         switch (evt.key) {
             case "b":
