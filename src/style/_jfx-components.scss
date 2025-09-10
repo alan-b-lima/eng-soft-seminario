@@ -8,7 +8,7 @@ $inactice-foreground: #959b9e;
 $foreground: #000000;
 
 $sans-serif-font: system-ui, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-$mono-space-font: 'Consolas', Courier, monospace;
+$monospace-font: 'Consolas', Courier, monospace;
 
 $padding: .25rem;
 $thin-border: 1px;
@@ -188,4 +188,8 @@ $thin-border: 1px;
         left: 0;
         top: 0;
     }
+}
+
+.jfx-code-block {
+    font-family: $monospace-font;
 }
