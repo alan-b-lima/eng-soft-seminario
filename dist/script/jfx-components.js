@@ -33,4 +33,10 @@ export var jfx;
         return element("div", { className: "jfx-field" }, ...children);
     }
     jfx.new_field = new_field;
+    function new_code_block(source, language) {
+        return element("pre", { className: "jfx-code-block" }, element("code", {
+            innerHTML: hljs.highlight(source, { language }).value
+        }));
+    }
+    jfx.new_code_block = new_code_block;
 })(jfx || (jfx = {}));

@@ -3,14 +3,17 @@ import sspm from "../sspm/slide.ts"
 
 export type WindowData = {
     title: string
-    options: Record<string, string>
+    options: Record<string, {
+        name: string,
+        submenus: string[]
+    }>
 }
 
 export function new_slide_window(window: WindowData, option: string, ...children: (Node | string)[]): sspm.Slide {
     const slide_window = (
         jfx.new_window(
             window.title, true,
-            jfx.new_menu(Object.values(window.options), window.options[option]),
+            jfx.new_menu(Object.values(window.options).map(v => v.name), window.options[option].name),
             ...children
         )
     )
@@ -23,7 +26,7 @@ export function new_column_window(window: WindowData, option: string, ...columns
     const slide_window = (
         jfx.new_window(
             window.title, true,
-            jfx.new_menu(Object.values(window.options), window.options[option]),
+            jfx.new_menu(Object.values(window.options).map(v => v.name), window.options[option].name),
             jfx.new_panel(...columns.map(c => jfx.new_panel(...c)))
         )
     )

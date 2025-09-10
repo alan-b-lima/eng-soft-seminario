@@ -1,5 +1,9 @@
 import { element } from "./jsxmm/jsxmm.ts"
 
+declare var hljs: {
+    highlight: (code: string, options: { language: string }) => { value: string }
+}
+
 export namespace jfx {
     export function new_title_bar(title: string, maximized: boolean = true) {
         return (
@@ -49,5 +53,13 @@ export namespace jfx {
 
     export function new_field(...children: (Node | string)[]) {
         return element("div", { className: "jfx-field" }, ...children)
+    }
+
+    export function new_code_block(source: string, language: string) {
+        return element("pre", { className: "jfx-code-block" },
+            element("code", {
+                innerHTML: hljs.highlight(source, { language }).value
+            })
+        )
     }
 }

@@ -5,19 +5,19 @@ import { new_slide_window } from "./common.js";
 const WINDOW_DATA = {
     title: "Seminário de Engenharia de Software I",
     options: {
-        home: "Início",
-        solid: "SOLID",
-        strategy: "Strategy",
-        deadly_diamond: "Diamante da Morte",
-        refused_bequest: "Herança Negada",
-        interface_extraction: "Extração de Interface"
+        home: { name: "Início", submenus: [] },
+        solid: { name: "SOLID", submenus: [] },
+        strategy: { name: "Strategy", submenus: ["Definição"] },
+        deadly_diamond: { name: "Diamante da Morte", submenus: [] },
+        refused_bequest: { name: "Herança Negada", submenus: [] },
+        interface_extraction: { name: "Extração de Interface", submenus: [] },
     }
 };
 function new_home_slide() {
     const option = "home";
     const names = [
         "Alan Lima", "Breno Augusto", "Juan Pablo",
-        "Luan Filipe", "Mateus Oliveira", "Vitor Moises"
+        "Luan Filipe", "Mateus Oliveira", "Vitor Mozer"
     ];
     const slide_window = new_slide_window(WINDOW_DATA, option, jfx.new_panel(element("h1", {}, "Seminário de Engenharia de Software I"), element("h2", {}, jfx.new_button("Strategy"), jfx.new_button("Diamante da Morte"), jfx.new_button("Herança Negada"), jfx.new_button("Extração de Interface")), element("span", {}, jfx.new_field(`${names.slice(0, -1).reduce((acc, v) => `${acc}, ${v}`)} e ${names[names.length - 1]}`), element("div", {}, "Profª Kattiana Constantino"))));
     slide_window.element().classList.add(`${option}-slide`);
@@ -61,9 +61,13 @@ function new_strategy_slide() {
     slide_window.element().classList.add(`${option}-slide`);
     return slide_window;
 }
-export default [
-    new_home_slide(),
-    new_solid_slide(),
-    new_strategy_slide(),
-    new sspm.Slide(element("div", { className: "slide final-slide" }, "Fim da Apresentação")),
-];
+export default async function () {
+    return [
+        new_home_slide(),
+        new_solid_slide(),
+        new_strategy_slide(),
+        new sspm.Slide(element("div", { className: "slide" }, jfx.new_code_block(await fetch("./assets/code/main.go").then(res => res.text()), "go"))),
+        new sspm.Slide(element("div", { className: "slide" }, jfx.new_code_block(await fetch("./assets/code/Main.java").then(res => res.text()), "java"))),
+        new sspm.Slide(element("div", { className: "slide final-slide" }, "Fim da Apresentação")),
+    ];
+}

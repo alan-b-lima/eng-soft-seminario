@@ -5,7 +5,7 @@ import { ChoiceTree, setup_event_listenters } from "./sspm/listeners.ts"
 import sspm from "./sspm/slide.ts"
 import slides from "./slides/slides.ts"
 
-function main() {
+async function main() {
 	const ROOT = document.body
 
 	const page_number_str = localStorage.getItem("current-page")
@@ -18,13 +18,12 @@ function main() {
 		}
 	}
 
-	const ss = new sspm.SlideShow({ start_at }, ...slides)
+	const ss = new sspm.SlideShow({ start_at }, ...(await slides()))
 	ROOT.append(...ss.slides().map(s => s.element()))
 
 	const listeners = setup_event_listenters(ss, new_choice_tree(ss))
 	listeners.attach(new Callback(() => {
 		localStorage.setItem("current-page", `${ss.current()}`)
-		console.log(ss.current())
 	}))
 }
 
