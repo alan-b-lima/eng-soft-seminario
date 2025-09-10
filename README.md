@@ -4,7 +4,7 @@ Esse é um seminário da disciplina de Engenharia de Software I, com quatro tóp
 
 ## Padrão de Projeto: Strategy
 
-Definir uma família de algoritmos, encapsular cada uma, e faze-los intercambiáveis. Strategy permite que o algoritmo varie de forma independente do cliente que o usa[^four].
+Definir uma família de algoritmos, encapsular cada uma, e fazê-los intercambiáveis. Strategy permite que o algoritmo varie de forma independente do cliente que o usa[^four].
 
 ### Interfaces Funcionais no Java
 
@@ -16,7 +16,7 @@ public interface Comparator<E> {
 }
 ```
 
-Para declara-los, a forma tradicional seria criar uma classe a parte que implementa essa interface, ou usar funções anonimas:
+Para declará-los, a forma tradicional seria criar uma classe a parte que implementa essa interface, ou usar funções anonimas:
 
 ```java
 Comparator<Integer> func = new Comparator<>() {
@@ -32,7 +32,7 @@ Comparator<Integer> func = (o1, o2) -> {
 
 ## Anti-Padrão: Diamante da Morte
 
-Diamante da Morte (ou Deadly Diamand of Death), também conhecido como problema de herança multipla, ocorre quando duas ramificações em uma cadeia hierárquica convergem, o esquema geral é disposto abaixo:
+Diamante da Morte (ou Deadly Diamand of Death), também conhecido como problema de herança múltipla, ocorre quando duas ramificações em uma cadeia hierárquica convergem, o esquema geral é disposto abaixo:
 
 ```mermaid
 classDiagram
@@ -41,18 +41,18 @@ classDiagram
         
     }
 
-    Father --|> CommonAncestor
-    class Father {
+    CommonAncestor <|-- Parent1
+    class Parent1 {
 
     }
 
-    Mother --|> CommonAncestor
-    class Mother {
+    CommonAncestor <|-- Parent2
+    class Parent2 {
 
     }
 
-    Child --|> Father
-    Child --|> Mother
+    Parent1 <|-- Child
+    Parent2 <|-- Child
     class Child {
 
     }
