@@ -1,4 +1,5 @@
 import { element } from "./jsxmm/jsxmm.js";
+import hljs from "./lib/highlight.min.js";
 export var jfx;
 (function (jfx) {
     function new_title_bar(title, maximized = true) {

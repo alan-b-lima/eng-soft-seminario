@@ -1,8 +1,5 @@
 import { element } from "./jsxmm/jsxmm.ts"
-
-declare var hljs: {
-    highlight: (code: string, options: { language: string }) => { value: string }
-}
+import hljs from "./lib/highlight.min.js"
 
 export namespace jfx {
     export function new_title_bar(title: string, maximized: boolean = true) {
