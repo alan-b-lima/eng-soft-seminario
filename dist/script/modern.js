@@ -10,16 +10,6 @@ export function format_duration(duration_ms) {
         hours, minutes, seconds
     });
 }
-export function string_merge(...strings) {
-    if (strings.length === 0) {
-        return "";
-    }
-    let string = strings[0];
-    for (let i = 1; i < strings.length; i++) {
-        string += " " + strings[i];
-    }
-    return string;
-}
 export class Ticker {
     #id;
     constructor() {
