@@ -1,6 +1,6 @@
 # Seminário de Engenharia de Software
 
-Esse é um seminário da disciplina de Engenharia de Software I, com quatro tópicos: Padrão de Projeto, Anti-Padrão, Code Smell e Técnica de Refatoração. Com os tópico especificos escolhidos sendo: Strategy, Diamante da Morte, Refused Bequest e Extração de Interface, respectivamente. A apresentação está disponível em: https://alan-b-lima.github.io/eng-soft-seminario/dist/slides/home.html.
+Esse é um seminário da disciplina de Engenharia de Software I, com quatro tópicos: Padrão de Projeto, Anti-Padrão, Code Smell e Técnica de Refatoração. Com os tópico especificos escolhidos sendo: Strategy, Diamante da Morte, Refused Bequest e Extração de Interface, respectivamente. A apresentação está disponível em: https://alan-b-lima.github.io/eng-soft-seminario/dist/.
 
 ## Padrão de Projeto: Strategy
 
@@ -72,3 +72,4 @@ Pense no seguite problema: ""
 
 [^muratori]: [Casey Muratori - The Big OOPs: Anatomy of a Thirty-five-year Mistake](https://www.youtube.com/watch?v=wo84LFzx5nI)
 [^four]: [Gang of Four - Design Patterns: Elements of Reusable Object Oriented Programming](https://www.javier8a.com/itc/bd1/articulo.pdf)
+<!-- [^]: (https://elixir.bootlin.com/linux/v6.16.7/source/include/linux/fs.h#L2151) -->
