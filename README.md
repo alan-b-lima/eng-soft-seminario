@@ -1,6 +1,6 @@
 # Seminário de Engenharia de Software
 
-Esse é um seminário da disciplina de Engenharia de Software I, com quatro tópicos: Padrão de Projeto, Anti-Padrão, Code Smell e Técnica de Refatoração. Com os tópico especificos escolhidos sendo: Repository, Diamante da Morte, Refused Bequest e &#60;técnica de refatoração&#62;, respectivamente. A apresentação está disponível em: https://alan-b-lima.github.io/eng-soft-seminario/dist.
+Esse é um seminário da disciplina de Engenharia de Software I, com quatro tópicos: Padrão de Projeto, Anti-Padrão, Code Smell e Técnica de Refatoração. Com os tópico especificos escolhidos sendo: Strategy, Diamante da Morte, Refused Bequest e Extração de Interface, respectivamente. A apresentação está disponível em: https://alan-b-lima.github.io/eng-soft-seminario/dist/slides/home.html.
 
 ## Padrão de Projeto: Strategy
 
@@ -16,18 +16,18 @@ public interface Comparator<E> {
 }
 ```
 
-Para declará-los, a forma tradicional seria criar uma classe a parte que implementa essa interface, ou usar funções anonimas:
+Para declará-los, a forma tradicional seria criar uma classe a parte que implementa essa interface, ou usar funções anônimas:
 
 ```java
 Comparator<Integer> func = new Comparator<>() {
     int compare(Integer o1, Integer o2) {
         return o1 - o2;
     }
-}
+};
 
 Comparator<Integer> func = (o1, o2) -> {
     return o1 - o2;
-}
+};
 ```
 
 ## Anti-Padrão: Diamante da Morte

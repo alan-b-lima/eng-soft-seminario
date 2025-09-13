@@ -1,7 +1,7 @@
-import sspm from "./slide.js";
-import { Listener, Locker } from "./lock.js";
+import { SlideShow } from "./slide.ts";
+import { Listener, Locker } from "./lock.ts";
 
-export function setup_event_listenters(ss: sspm.SlideShow, tree?: ChoiceTree): Notifier & Locker {
+export function setup_event_listenters(ss: SlideShow, tree?: ChoiceTree): Notifier & Locker {
 	const keydown_lock = new Listener(navigation_keydown_listener.bind(null, ss))
 	const click_lock = new Listener(navigation_click_listener.bind(null, ss))
 
@@ -62,7 +62,7 @@ class ListenerBundle<E extends Event> {
 	}
 }
 
-function navigation_keydown_listener(ss: sspm.SlideShow, evt: KeyboardEvent): void {
+function navigation_keydown_listener(ss: SlideShow, evt: KeyboardEvent): void {
 	switch (evt.key) {
 	case "PageUp":
 	case "ArrowUp":
@@ -91,7 +91,7 @@ function navigation_keydown_listener(ss: sspm.SlideShow, evt: KeyboardEvent): vo
 	evt.preventDefault()
 }
 
-function navigation_click_listener(ss: sspm.SlideShow, evt: MouseEvent): void {
+function navigation_click_listener(ss: SlideShow, evt: MouseEvent): void {
 	const THRESHOLD_FOR_REVERT = 0.10
 	if (evt.screenX / window.innerWidth >= THRESHOLD_FOR_REVERT) {
 		ss.advance()
