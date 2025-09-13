@@ -1,0 +1,52 @@
+const MILLISECOND = 1
+const SECOND = 1000 * MILLISECOND
+const MINUTE = 60 * SECOND
+const HOUR = 60 * MINUTE
+
+export function format_duration(duration_ms: number): string {
+    const seconds = Math.floor((duration_ms % MINUTE) / SECOND)
+    const minutes = Math.floor((duration_ms % HOUR) / MINUTE)
+    const hours = Math.floor(duration_ms / HOUR)
+
+    return new (Intl as any).DurationFormat("pt-br", { style: "digital" }).format({
+        hours, minutes, seconds
+    })
+}
+
+export function string_merge(...strings: string[]): string {
+    if (strings.length === 0) {
+        return ""
+    }
+
+    let string = strings[0]
+    for (let i = 1; i < strings.length; i++) {
+        string += " " + strings[i]
+    }
+
+    return string
+}
+
+export class Ticker {
+    #id: number | null
+
+    constructor() {
+        this.#id = null
+    }
+
+    start(callback: () => void, timeout: number): void {
+        if (this.#id !== null) {
+            clearInterval(this.#id)
+        }
+
+        this.#id = setInterval(callback)
+    }
+
+    stop(): void {
+        if (this.#id === null) {
+            return
+        }
+
+        clearInterval(this.#id)
+        this.#id = null
+    }
+}

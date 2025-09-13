@@ -1,20 +1,24 @@
-import { Coordinator } from "./coodinator.js";
 export class SlideShow {
-    #coordinator;
-    #current;
-    #names;
     #slides;
-    constructor(...pages) {
-        this.#coordinator = new Coordinator();
-        this.#current = undefined;
-        this.#names = [];
-        this.#slides = [];
-        pages.forEach(page => {
-            this.#coordinator.add(page.name, page.location);
-            this.#names.push(page.name);
-            this.#slides.push(page.slide);
-        });
-        this.goto(0);
+    #current;
+    static DEFAULT_OPTIONS = {
+        start_at: 0,
+        counter_selector: ".counter",
+    };
+    constructor(options, ...slides) {
+        if (slides.length === 0) {
+            throw new Error("empty slide show");
+        }
+        this.#slides = slides;
+        const selector = options.counter_selector ?? SlideShow.DEFAULT_OPTIONS.counter_selector;
+        for (let i = 0; i < this.#slides.length; i++) {
+            const counter = this.#slides[i].element().querySelectorAll(selector);
+            for (let i = 0; i < counter.length; i++) {
+                counter[i].textContent = `${i + 1}`;
+            }
+        }
+        this.#current = -1;
+        this.goto(options.start_at ?? SlideShow.DEFAULT_OPTIONS.start_at);
     }
     slides() {
         return this.#slides;
@@ -30,12 +34,11 @@ export class SlideShow {
         if (this.#current == index) {
             return;
         }
-        if (this.#current !== undefined) {
+        if (this.#current >= 0) {
             this.#slides[this.#current].leave();
         }
         this.#current = index;
         this.#slides[this.#current].enter();
-        this.#coordinator.to(this.#names[this.#current]);
     }
     advance() {
         const current = this.#slides[this.#current];
@@ -53,37 +56,69 @@ export class SlideShow {
         const slide = this.#slides[this.#current];
         if (slide.frame() > 1) {
             slide.revert();
+            return;
         }
-        else {
-            this.goto(this.#current - 1);
-        }
+        this.goto(this.#current - 1);
     }
 }
 export class Slide {
+    #element;
     #animation;
-    #generator;
+    #visible;
     #frame;
+    #generator;
     #done;
-    constructor(animation) {
+    static HIDE_SLIDE = (s) => {
+        s.element().classList.remove("current-slide");
+    };
+    static SHOW_SLIDE = (s) => {
+        s.element().classList.add("current-slide");
+    };
+    constructor(element, animation) {
         if (animation === undefined) {
             animation = empty_generator;
         }
+        this.#element = element;
         this.#animation = animation;
+        this.#visible = false;
+        this.#frame = 0;
         this.#generator = undefined;
-        this.#frame = undefined;
-        this.#done = undefined;
+        this.#done = false;
     }
-    done() {
-        return this.#done === true;
+    element() {
+        return this.#element;
+    }
+    animation(animation) {
+        if (animation !== undefined) {
+            const old = this.#animation;
+            this.#animation = animation;
+            return old;
+        }
+        return this.#animation;
+    }
+    visible() {
+        return this.#visible;
     }
     frame() {
         return this.#frame;
     }
     enter() {
+        if (!this.#visible) {
+            Slide.SHOW_SLIDE(this);
+            this.#visible = true;
+        }
         this.#generator = this.#animation();
+        this.#done = false;
         this.#frame = 0;
+        this.advance();
+    }
+    done() {
+        return this.#done;
     }
     advance() {
+        if (!this.#visible) {
+            return;
+        }
         const { done } = this.#generator.next();
         if (done === true) {
             this.#done = true;
@@ -93,14 +128,21 @@ export class Slide {
         }
     }
     revert() {
+        if (!this.#visible) {
+            return;
+        }
         const frame = this.#frame - 1;
         this.enter();
-        this.#generator.drop(frame);
+        for (let i = 1; i < frame; i++) {
+            this.advance();
+        }
     }
     leave() {
         while (!this.#done) {
             this.advance();
         }
+        Slide.HIDE_SLIDE(this);
+        this.#visible = false;
     }
 }
-function* empty_generator() { }
+export function* empty_generator() { }

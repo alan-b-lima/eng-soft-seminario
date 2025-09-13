@@ -1,26 +1,34 @@
-import { Coordinator } from "./coodinator.ts"
+export type Options = {
+    start_at: number,
+    counter_selector: string,
+}
 
 export class SlideShow {
-    #coordinator: Coordinator
+    #slides: Slide[]
     #current: number
 
-    #names: string[]
-    #slides: Slide[]
+    static DEFAULT_OPTIONS: Options = {
+        start_at: 0,
+        counter_selector: ".counter",
+    }
 
-    constructor(...pages: Page[]) {
-        this.#coordinator = new Coordinator()
-        this.#current = undefined as any as number
+    constructor(options: Partial<Options>, ...slides: Slide[]) {
+        if (slides.length === 0) {
+            throw new Error("empty slide show")
+        }
 
-        this.#names = []
-        this.#slides = []
+        this.#slides = slides
+        const selector = options.counter_selector ?? SlideShow.DEFAULT_OPTIONS.counter_selector
 
-        pages.forEach(page => {
-            this.#coordinator.add(page.name, page.location)
-            this.#names.push(page.name)
-            this.#slides.push(page.slide)
-        })
+        for (let i = 0; i < this.#slides.length; i++) {
+            const counter = this.#slides[i].element().querySelectorAll(selector)
+            for (let i = 0; i < counter.length; i++) {
+                counter[i].textContent = `${i + 1}`
+            }
+        }
 
-        this.goto(0)
+        this.#current = -1
+        this.goto(options.start_at ?? SlideShow.DEFAULT_OPTIONS.start_at)
     }
 
     slides(): Slide[] {
@@ -41,13 +49,12 @@ export class SlideShow {
             return
         }
 
-        if (this.#current !== undefined) {
+        if (this.#current >= 0) {
             this.#slides[this.#current].leave()
         }
 
         this.#current = index
         this.#slides[this.#current].enter()
-        this.#coordinator.to(this.#names[this.#current])
     }
 
     advance(): void {
@@ -69,39 +76,60 @@ export class SlideShow {
         const slide = this.#slides[this.#current]
         if (slide.frame() > 1) {
             slide.revert()
-        } else {
-            this.goto(this.#current - 1)
+            return
         }
+
+        this.goto(this.#current - 1)
     }
 }
 
-export type Page = {
-    name: string
-    location: string
-    slide: Slide
-}
-
 export class Slide {
+    #element: HTMLElement
     #animation: Animation
-
-    #generator: AnimationGenerator
+    #visible: boolean
+    
     #frame: number
+    #generator: AnimationGenerator
     #done: boolean
 
-    constructor(animation?: Animation) {
+    static HIDE_SLIDE = (s: Slide) => {
+        s.element().classList.remove("current-slide")
+    }
+
+    static SHOW_SLIDE = (s: Slide) => {
+        s.element().classList.add("current-slide")
+    }
+
+    constructor(element: HTMLElement, animation?: Animation) {
         if (animation === undefined) {
             animation = empty_generator
         }
 
+        this.#element = element
         this.#animation = animation
-
+        this.#visible = false
+        
+        this.#frame = 0
         this.#generator = undefined as any as AnimationGenerator
-        this.#frame = undefined as any as number
-        this.#done = undefined as any as boolean
+        this.#done = false
     }
 
-    done(): boolean {
-        return this.#done === true
+    element(): HTMLElement {
+        return this.#element
+    }
+
+    animation(animation?: Animation): Animation {
+        if (animation !== undefined) {
+            const old = this.#animation
+            this.#animation = animation
+            return old
+        }
+
+        return this.#animation
+    }
+
+    visible(): boolean {
+        return this.#visible
     }
 
     frame(): number {
@@ -109,11 +137,26 @@ export class Slide {
     }
 
     enter(): void {
+        if (!this.#visible) {
+            Slide.SHOW_SLIDE(this)
+            this.#visible = true
+        }
+
         this.#generator = this.#animation()
+        this.#done = false
         this.#frame = 0
+        this.advance()
+    }
+
+    done(): boolean {
+        return this.#done
     }
 
     advance(): void {
+        if (!this.#visible) {
+            return
+        }
+
         const { done } = this.#generator.next()
         if (done === true) {
             this.#done = true
@@ -123,21 +166,29 @@ export class Slide {
     }
 
     revert(): void {
-        const frame = this.#frame - 1
+        if (!this.#visible) {
+            return
+        }
 
+        const frame = this.#frame - 1
         this.enter()
-        this.#generator.drop(frame)
+        for (let i = 1; i < frame; i++) {
+            this.advance()
+        }
     }
 
     leave(): void {
         while (!this.#done) {
             this.advance()
         }
+
+        Slide.HIDE_SLIDE(this)
+        this.#visible = false
     }
 }
 
-export type AnimationGenerator = Generator<void, void, void>
-
 export type Animation = () => AnimationGenerator
 
-function* empty_generator() { }
+export type AnimationGenerator = Generator<void, void, void>
+
+export function* empty_generator() { }

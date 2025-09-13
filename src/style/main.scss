@@ -7,6 +7,11 @@ html {
     // font-size: 1.75rem;
 }
 
+html:active * {
+    background: none;
+    background-color: #0701
+}
+
 body {
     @include reset.reset-chain();
 
@@ -114,11 +119,102 @@ body {
         }
     }
 
+    &.strategy-slide>.jfx-panel {
+        & {
+            display: grid;
+            grid-template-rows: 1fr auto;
+            padding: 2rem;
+        }
+
+        &>.jfx-field {
+            font-size: 1.25rem;
+        }
+
+        &>span {
+            text-align: right;
+        }
+    }
+
     &.final-slide {
         color: jfx.$background-white;
         background-color: jfx.$background-selected;
         font-size: 1.25rem;
         text-align: center;
         padding: .25rem;
+    }
+
+    article {
+        display: flex;
+        flex-direction: column;
+        row-gap: .75rem;
+    }
+
+    p {
+        text-align: justify;
+
+        &.paragraph::before {
+            content: "";
+            padding-inline: 1rem;
+        }
+    }
+
+    ul {
+        & {
+            list-style: none;
+        }
+
+        li:has(ul) {
+            & {
+                padding: 0 0 0 1rem;
+            }
+
+            &::before {
+                content: none !important;
+            }
+        }
+
+        li {
+            &::before {
+                content: "\25CF";
+                padding: 0 1rem 0 0;
+                font-family: 'Courier New', Courier, monospace;
+            }
+
+            & li::before {
+                content: "\25CB";
+            }
+
+            & li li::before {
+                content: "\25AA";
+            }
+
+            & li li li::before {
+                content: "\25AB";
+            }
+        }
+    }
+
+    .code-block {
+        font-family: jfx.$monospace-font;
+    }
+
+    .two-columns {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+}
+
+.dialog-box {
+    & {
+        padding: 0;
+    }
+
+    form {
+        display: grid;
+        padding: 2rem;
+        font-size: 1.25rem;
+        gap: 1rem;
     }
 }
