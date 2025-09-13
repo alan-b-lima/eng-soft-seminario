@@ -1,5 +1,19 @@
-@use "reset";
 @use "jfx-components" as jfx;
+
+
+*,
+*::before,
+*::after {
+    height: 100%;
+    overflow: hidden;
+    box-sizing: border-box;
+    color: inherit;
+    font: inherit;
+    outline: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+}
 
 html {
     color: jfx.$foreground;
@@ -13,14 +27,10 @@ html:active * {
 }
 
 body {
-    @include reset.reset-chain();
-
-    & {
-        display: grid;
-        grid-template-rows: 1fr auto;
-        height: 100dvh;
-        width: 100dvw;
-    }
+    display: grid;
+    grid-template-rows: 1fr auto;
+    height: 100dvh;
+    width: 100dvw;
 }
 
 @media print {
@@ -67,72 +77,90 @@ body {
             gap: .25em;
         }
 
-        span>.jfx-field {
-            text-align: center;
-        }
-
-        span>div:last-child {
-            text-align: end;
-        }
-    }
-
-    &.solid-slide {
-        .solid-principles {
+        span {
             & {
-                display: grid;
-                grid-template-columns: repeat(5, 1fr);
-                justify-content: center;
-                transition: scale .25s ease-in-out;
-                padding: 4rem;
-                gap: 2rem;
+                display: flex;
+                flex-direction: column;
             }
 
-            .solid-principle {
-                & {
-                    display: grid;
-                    grid-template-columns: auto 1fr;
-                    transition: scale .25s ease-in-out;
-                    padding: .5rem;
-                    gap: .5rem;
-                }
-
-                .solid-letter {
-                    font-family: jfx.$monospace-font;
-                    font-size: 3rem;
-                }
-
-                .solid-statement {
-                    display: flex;
-                    align-items: center;
-                    transition: scale .125s ease-in-out;
-                    scale: 0;
-                }
+            &>.jfx-field {
+                text-align: center;
             }
 
-            .solid-principle.highlight {
-                .solid-statement {
-                    display: flex;
-                    align-items: center;
-                    scale: 1;
-                }
+            &>div:last-child {
+                text-align: end;
             }
         }
+
     }
 
-    &.strategy-slide>.jfx-panel {
+    &.solid-slide .solid-principles {
         & {
             display: grid;
-            grid-template-rows: 1fr auto;
-            padding: 2rem;
+            grid-template-columns: repeat(5, 1fr);
+            justify-content: center;
+            transition: scale .25s ease-in-out;
+            padding: 4rem;
+            gap: 2rem;
         }
 
-        &>.jfx-field {
-            font-size: 1.25rem;
+        .solid-principle {
+            & {
+                display: grid;
+                grid-template-columns: auto 1fr;
+                transition: scale .25s ease-in-out;
+                padding: .5rem;
+                gap: .5rem;
+            }
+
+            .solid-letter {
+                font-family: jfx.$monospace-font;
+                font-size: 3rem;
+            }
+
+            .solid-statement {
+                display: flex;
+                align-items: center;
+                transition: scale .125s ease-in-out;
+                scale: 0;
+            }
         }
 
-        &>span {
-            text-align: right;
+        .solid-principle.highlight .solid-statement {
+            display: flex;
+            align-items: center;
+            scale: 1;
         }
+    }
+
+    &.strategy-slide {
+        &.foreword>.jfx-panel {
+            & {
+                display: grid;
+                grid-template-rows: auto 1fr auto;
+                padding: 1rem 2rem 2rem 2rem;
+            }
+
+            &>h1 {
+                font-size: 1.75rem;
+                padding-bottom: .5rem;
+                font-weight: bold;
+            }
+
+            &>.jfx-field {
+                font-size: 1.25rem;
+                text-align: justify;
+            }
+
+            &>span {
+                text-align: right;
+            }
+        }
+    }
+
+    &.references-slide>.jfx-panel {
+        display: flex;
+        gap: 1rem;
     }
 
     &.final-slide {
@@ -150,7 +178,9 @@ body {
     }
 
     p {
-        text-align: justify;
+        & {
+            text-align: justify;
+        }
 
         &.paragraph::before {
             content: "";
@@ -195,7 +225,13 @@ body {
     }
 
     .code-block {
+        padding: .5rem;
+        border-radius: .2rem;
+        border: 1px solid jfx.$background-selected;
+        background-color: #ffffdf;
         font-family: jfx.$monospace-font;
+        scrollbar-width: thin;
+        overflow: auto;
     }
 
     .two-columns {
@@ -209,6 +245,9 @@ body {
 .dialog-box {
     & {
         padding: 0;
+        border: 1px solid jfx.$background-dark;
+        height: fit-content;
+        margin: auto;
     }
 
     form {

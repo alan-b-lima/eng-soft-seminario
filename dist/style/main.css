@@ -53,6 +53,7 @@
 }
 .jfx-title .jfx-windows-options {
   display: flex;
+  align-items: center;
   gap: 2.25rem;
 }
 .jfx-title .jfx-windows-options .jfx-minimize,
@@ -144,6 +145,20 @@
   top: 0;
 }
 
+*,
+*::before,
+*::after {
+  height: 100%;
+  overflow: hidden;
+  box-sizing: border-box;
+  color: inherit;
+  font: inherit;
+  outline: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
 html {
   color: #000000;
   font-family: system-ui, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -154,17 +169,6 @@ html:active * {
   background-color: rgba(0, 119, 0, 0.0666666667);
 }
 
-body,
-body *,
-body *::before,
-body *::after {
-  box-sizing: border-box;
-  color: inherit;
-  font: inherit;
-  border: none;
-  padding: 0;
-  margin: 0;
-}
 body {
   display: grid;
   grid-template-rows: 1fr auto;
@@ -207,6 +211,10 @@ body {
   flex-wrap: wrap;
   gap: 0.25em;
 }
+.slide.home-slide > .jfx-panel span {
+  display: flex;
+  flex-direction: column;
+}
 .slide.home-slide > .jfx-panel span > .jfx-field {
   text-align: center;
 }
@@ -243,16 +251,26 @@ body {
   align-items: center;
   scale: 1;
 }
-.slide.strategy-slide > .jfx-panel {
+.slide.strategy-slide.foreword > .jfx-panel {
   display: grid;
-  grid-template-rows: 1fr auto;
-  padding: 2rem;
+  grid-template-rows: auto 1fr auto;
+  padding: 1rem 2rem 2rem 2rem;
 }
-.slide.strategy-slide > .jfx-panel > .jfx-field {
+.slide.strategy-slide.foreword > .jfx-panel > h1 {
+  font-size: 1.75rem;
+  padding-bottom: 0.5rem;
+  font-weight: bold;
+}
+.slide.strategy-slide.foreword > .jfx-panel > .jfx-field {
   font-size: 1.25rem;
+  text-align: justify;
 }
-.slide.strategy-slide > .jfx-panel > span {
+.slide.strategy-slide.foreword > .jfx-panel > span {
   text-align: right;
+}
+.slide.references-slide > .jfx-panel {
+  display: flex;
+  gap: 1rem;
 }
 .slide.final-slide {
   color: #ffffff;
@@ -297,7 +315,13 @@ body {
   content: "▫";
 }
 .slide .code-block {
+  padding: 0.5rem;
+  border-radius: 0.2rem;
+  border: 1px solid #3d5c72;
+  background-color: #ffffdf;
   font-family: "Consolas", Courier, monospace;
+  scrollbar-width: thin;
+  overflow: auto;
 }
 .slide .two-columns {
   display: grid;
@@ -308,6 +332,9 @@ body {
 
 .dialog-box {
   padding: 0;
+  border: 1px solid #55585e;
+  height: fit-content;
+  margin: auto;
 }
 .dialog-box form {
   display: grid;

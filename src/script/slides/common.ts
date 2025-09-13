@@ -1,6 +1,7 @@
 import { element } from "../jsxmm/jsxmm.ts"
 import { Slide } from "../sspm/slide.ts"
-import jfx  from "../jfx-components.ts"
+import jfx from "../jfx-components.ts"
+import { highlight, Language } from "../highlight/highlight.ts"
 
 export type WindowData = {
     title: string
@@ -16,7 +17,7 @@ export function new_slide_window(window: WindowData, option: string, ...children
         )
     )
 
-    slide_window.classList.add("slide")
+    slide_window.classList.add("slide", `${option}-slide`)
     return new Slide(slide_window)
 }
 
@@ -33,32 +34,33 @@ export function new_column_window(window: WindowData, option: string, ...columns
     return new Slide(slide_window)
 }
 
-// type Language = "go" | "java" | "c" | (string & {})
 
-// export function new_code_block_fetch(source: string, language: Language) {
-//     const code = element("code")
-//     const block = element("pre", { className: "code-block" }, code)
+export async function new_code_block_fetch(url: string, language: Language) {
+    const code = element("code")
+    const block = element("pre", { className: `code-block language-${language}` }, code)
 
-//     fetch(source)
-//         .then(res => res.text())
-//         .then(source => {
-//             const hl_source = hljs.highlight(source, { language })
-//             code.innerHTML = hl_source.value
-//         })
-//         .catch(err => code.textContent = err)
+    fetch(url).then(response => {
+        if (!response.ok) {
+            throw response.statusText
+        }
 
-//     return block
-// }
+        return response.text()
+    }).then(source => {
+        code.innerHTML = highlight(source, language)
+    }).catch(err => {
+        code.textContent = err
+    })
 
-// export function new_code_block(source: string, language: Language) {
-//     return (
-//         element("pre", { className: "code-block" },
-//             element("code", {
-//                 innerHTML: hljs.highlight(source, { language }).value
-//             })
-//         )
-//     )
-// }
+    return block
+}
+
+export function new_code_block(source: string, language: Language) {
+    return (
+        element("pre", { className: `code-block language-${language}` },
+            element("code", { innerHTML: highlight(source, language) })
+        )
+    )
+}
 
 export function new_two_columns(children0: string | Node, children1: string | Node) {
     return element("div", { className: "two-columns" }, children0, children1)
