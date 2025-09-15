@@ -43,8 +43,8 @@ namespace jfx {
         return element("div", { className: "jfx-panel" }, ...children)
     }
 
-    export function new_button(text: string) {
-        return element("div", { className: "jfx-button" }, text)
+    export function new_button(...children: (Node | string)[]) {
+        return element("div", { className: "jfx-button" }, ...children)
     }
 
     export function new_field(...children: (Node | string)[]) {

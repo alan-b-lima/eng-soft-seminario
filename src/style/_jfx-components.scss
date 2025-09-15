@@ -36,11 +36,15 @@ $thin-border: 1px;
         padding: 0 .25rem;
         border-bottom: $thin-border solid $background-highlight;
         border-top: $thin-border solid $background-highlight;
+        overflow: auto;
     }
 
     .jfx-menu-option {
         padding: .125rem .5rem;
         text-align: center;
+        width: fit-content;
+        white-space: pre;
+        overflow: initial;
     }
 
     .jfx-menu-option.selected {
@@ -63,6 +67,7 @@ $thin-border: 1px;
         aspect-ratio: 1 / 1;
         background-image: url(../assets/java.png);
         background-size: contain;
+        width: fit-content;
         height: 100%;
     }
 
@@ -110,10 +115,10 @@ $thin-border: 1px;
 
             &::before,
             &::after {
-                aspect-ratio: 1 / 1;
                 border: $thin-border solid $foreground;
                 content: "";
-                height: calc(100% * 3 / 4);
+                height: 75%;
+                width: 75%;
                 position: absolute;
             }
 

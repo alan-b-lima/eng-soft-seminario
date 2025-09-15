@@ -21,10 +21,14 @@
   padding: 0 0.25rem;
   border-bottom: 1px solid #9fb5c8;
   border-top: 1px solid #9fb5c8;
+  overflow: auto;
 }
 .jfx-menu .jfx-menu-option {
   padding: 0.125rem 0.5rem;
   text-align: center;
+  width: fit-content;
+  white-space: pre;
+  overflow: initial;
 }
 .jfx-menu .jfx-menu-option.selected {
   background-color: #3d5c72;
@@ -43,6 +47,7 @@
   aspect-ratio: 1/1;
   background-image: url(../assets/java.png);
   background-size: contain;
+  width: fit-content;
   height: 100%;
 }
 .jfx-title .jfx-window-name {
@@ -78,10 +83,10 @@
   position: relative;
 }
 .jfx-title .jfx-windows-options .jfx-restore::before, .jfx-title .jfx-windows-options .jfx-restore::after {
-  aspect-ratio: 1/1;
   border: 1px solid #000000;
   content: "";
   height: 75%;
+  width: 75%;
   position: absolute;
 }
 .jfx-title .jfx-windows-options .jfx-restore::before {
@@ -148,6 +153,7 @@
 *,
 *::before,
 *::after {
+  width: 100%;
   height: 100%;
   overflow: hidden;
   box-sizing: border-box;
@@ -159,6 +165,10 @@
   margin: 0;
 }
 
+*:focus {
+  outline: 3px solid black;
+}
+
 html {
   color: #000000;
   font-family: system-ui, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
@@ -166,7 +176,7 @@ html {
 
 html:active * {
   background: none;
-  background-color: rgba(0, 119, 0, 0.0666666667);
+  background-color: rgba(0, 119, 0, 0.0666666667) !important;
 }
 
 body {
@@ -202,14 +212,18 @@ body {
   gap: 1rem;
 }
 .slide.home-slide > .jfx-panel h1 {
-  font-size: 2.5em;
+  font-size: 2.5rem;
   text-align: center;
 }
 .slide.home-slide > .jfx-panel h2 {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 0.25em;
+  gap: 0.25rem;
+}
+.slide.home-slide > .jfx-panel h2 > .jfx-button {
+  height: fit-content;
+  width: fit-content;
 }
 .slide.home-slide > .jfx-panel span {
   display: flex;
@@ -268,9 +282,82 @@ body {
 .slide.strategy-slide.foreword > .jfx-panel > span {
   text-align: right;
 }
+.slide.strategy-slide.diagram > .jfx-panel {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr;
+  padding: 1rem 2rem 2rem 2rem;
+  column-gap: 1rem;
+}
+.slide.strategy-slide.diagram > .jfx-panel h1 {
+  font-size: 1.75rem;
+  padding-bottom: 0.5rem;
+  font-weight: bold;
+  grid-column: span 2;
+}
+.slide.strategy-slide.diagram > .jfx-panel .image-cell {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+.slide.strategy-slide.diagram > .jfx-panel .image-cell img {
+  height: 100%;
+  width: auto;
+}
 .slide.references-slide > .jfx-panel {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  align-content: start;
+  padding: 2rem;
   gap: 1rem;
+}
+.slide.references-slide > .jfx-panel .reference {
+  font-size: 1.125rem;
+  text-align: start;
+  padding: 0;
+}
+.slide.references-slide > .jfx-panel .reference:has(img) {
+  display: grid;
+  grid-template-columns: 1fr auto;
+}
+.slide.references-slide > .jfx-panel .reference.vertical-2 {
+  grid-row: span 2;
+}
+.slide.references-slide > .jfx-panel .reference.vertical-3 {
+  grid-row: span 3;
+}
+.slide.references-slide > .jfx-panel .reference.vertical-4 {
+  grid-row: span 4;
+}
+.slide.references-slide > .jfx-panel .reference.vertical-5 {
+  grid-row: span 5;
+}
+.slide.references-slide > .jfx-panel .reference.horizontal-2 {
+  grid-column: span 2;
+}
+.slide.references-slide > .jfx-panel .reference.horizontal-3 {
+  grid-column: span 3;
+}
+.slide.references-slide > .jfx-panel .reference.horizontal-4 {
+  grid-column: span 4;
+}
+.slide.references-slide > .jfx-panel .reference.horizontal-5 {
+  grid-column: span 5;
+}
+.slide.references-slide > .jfx-panel .reference a {
+  color: #3d5c72;
+}
+.slide.references-slide > .jfx-panel .reference strong {
+  font-weight: bold;
+}
+.slide.references-slide > .jfx-panel .reference div {
+  padding: 0.5rem;
+  text-align: justify;
+  word-break: break-word;
+}
+.slide.references-slide > .jfx-panel .reference img {
+  width: auto;
 }
 .slide.final-slide {
   color: #ffffff;
@@ -334,6 +421,7 @@ body {
   padding: 0;
   border: 1px solid #55585e;
   height: fit-content;
+  width: fit-content;
   margin: auto;
 }
 .dialog-box form {
@@ -341,4 +429,10 @@ body {
   padding: 2rem;
   font-size: 1.25rem;
   gap: 1rem;
+}
+.dialog-box form > div {
+  overflow: visible;
+}
+.dialog-box form .jfx-field {
+  display: inline;
 }

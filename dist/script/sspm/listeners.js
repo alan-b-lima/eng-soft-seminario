@@ -118,3 +118,7 @@ function escape_keydown_listener(lock, root) {
         }
     };
 }
+export function focus_lock(lock, element) {
+    element.addEventListener("focusin", () => { lock.lock(); });
+    element.addEventListener("focusout", () => { lock.unlock(); });
+}

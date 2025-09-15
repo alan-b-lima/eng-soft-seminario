@@ -2,7 +2,7 @@ import jfx from "./jfx-components.js";
 import { element } from "./jsxmm/jsxmm.js";
 import { format_duration, Ticker } from "./modern.js";
 import slides from "./slides/slides.js";
-import { setup_event_listenters } from "./sspm/listeners.js";
+import { focus_lock, setup_event_listenters } from "./sspm/listeners.js";
 import { SlideShow } from "./sspm/slide.js";
 async function main() {
     const ROOT = document.body;
@@ -20,6 +20,9 @@ async function main() {
     listeners.attach(new Callback(() => {
         localStorage.setItem("current-page", `${ss.current()}`);
     }));
+    ROOT.querySelectorAll("a").forEach(anchor => {
+        focus_lock(listeners, anchor);
+    });
 }
 class Callback {
     #callback;
@@ -36,8 +39,6 @@ function new_choice_tree(ss) {
     };
     const page_number_element = jfx.new_field();
     const elapsed_time_element = jfx.new_field();
-    page_number_element.style.display = "inline";
-    elapsed_time_element.style.display = "inline";
     const dialog_box = element("dialog", { className: "dialog-box" }, jfx.new_window("Informação", false, element("form", { method: "dialog" }, element("div", {}, `Slide `, page_number_element, ` de ${ss.length()}`), element("div", {}, `Tempo decorrido: `, elapsed_time_element))));
     dialog_box.addEventListener("close", evt => { ticker.stop(); });
     document.documentElement.append(dialog_box);

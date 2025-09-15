@@ -25,8 +25,8 @@ var jfx;
         return element("div", { className: "jfx-panel" }, ...children);
     }
     jfx.new_panel = new_panel;
-    function new_button(text) {
-        return element("div", { className: "jfx-button" }, text);
+    function new_button(...children) {
+        return element("div", { className: "jfx-button" }, ...children);
     }
     jfx.new_button = new_button;
     function new_field(...children) {

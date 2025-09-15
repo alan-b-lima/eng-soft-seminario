@@ -2,7 +2,7 @@ import jfx from "./jfx-components.ts"
 import { element } from "./jsxmm/jsxmm.ts"
 import { format_duration, Ticker } from "./modern.ts"
 import slides from "./slides/slides.ts"
-import { ChoiceTree, setup_event_listenters } from "./sspm/listeners.ts"
+import { ChoiceTree, focus_lock, setup_event_listenters } from "./sspm/listeners.ts"
 import { SlideShow } from "./sspm/slide.ts"
 
 async function main() {
@@ -25,6 +25,10 @@ async function main() {
 	listeners.attach(new Callback(() => {
 		localStorage.setItem("current-page", `${ss.current()}`)
 	}))
+
+	ROOT.querySelectorAll("a").forEach(anchor => {
+		focus_lock(listeners, anchor)
+	})
 }
 
 class Callback implements Observer {
@@ -46,9 +50,6 @@ function new_choice_tree(ss: SlideShow): ChoiceTree {
 
 	const page_number_element = jfx.new_field()
 	const elapsed_time_element = jfx.new_field()
-
-	page_number_element.style.display = "inline"
-	elapsed_time_element.style.display = "inline"
 
 	const dialog_box = element("dialog", { className: "dialog-box" },
 		jfx.new_window("Informação", false,

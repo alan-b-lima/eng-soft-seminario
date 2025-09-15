@@ -151,4 +151,9 @@ function escape_keydown_listener(lock: Locker, root: ChoiceTree): (evt: Keyboard
 	}
 }
 
+export function focus_lock(lock: Locker, element: HTMLElement): void {
+	element.addEventListener("focusin", () => { lock.lock() })
+	element.addEventListener("focusout", () => { lock.unlock() })
+}
+
 export type ChoiceTree = [ChoiceTree, ChoiceTree] | (() => void)
