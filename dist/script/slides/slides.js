@@ -2,15 +2,16 @@ import jfx from "../jfx-components.js";
 import { element } from "../jsxmm/jsxmm.js";
 import { Slide } from "../sspm/slide.js";
 import { new_bullet_list, new_code_block_fetch, new_slide_window } from "./common.js";
+import extract_interface from "./extract_interface.js";
 const WINDOW_DATA = {
     title: "Seminário de Engenharia de Software I",
     options: {
-        home: "Início",
-        strategy: "Strategy",
-        deadly_diamond: "Diamante da Morte",
-        refused_bequest: "Herança Negada",
-        interface_extraction: "Extração de Interface",
-        references: "Referências",
+        "home": "Início",
+        "strategy": "Strategy",
+        "deadly-diamond": "Diamante da Morte",
+        "refused-bequest": "Herança Negada",
+        "extract-interface": "Extração de Interface",
+        "references": "Referências",
     }
 };
 function new_home_slide() {
@@ -50,7 +51,7 @@ function* animation_solid(principles) {
     }
 }
 function new_strategy_slide_1() {
-    const slide_window = (new_slide_window(WINDOW_DATA, "strategy", jfx.new_panel(element("h1", {}, "Strategy"), jfx.new_field([
+    const slide_window = new_slide_window(WINDOW_DATA, "strategy", element("main", { className: "titled" }, element("h1", {}, "Strategy"), jfx.new_panel(jfx.new_field([
         "Define uma família de algoritmos, encapsula cada um, e os faz intercambiáveis.",
         "Strategy permite que o algoritmo varie de forma independente do cliente que o usa.",
     ].join(" ")), element("span", {}, "~ Gang of Four"))));
@@ -60,17 +61,16 @@ function new_strategy_slide_1() {
 function new_strategy_slide_2() {
     const image_cell = jfx.new_field(element("img", {
         alt: "Strategy Class Diagram",
-        src: "./assets/diagram.jpg",
+        src: "./assets/images/diagram.jpg",
     }));
     image_cell.classList.add("image-cell");
-    const slide_window = (new_slide_window(WINDOW_DATA, "strategy", jfx.new_panel(element("h1", {}, "Strategy"), new_bullet_list("One Item"), image_cell)));
+    const slide_window = new_slide_window(WINDOW_DATA, "strategy", element("main", { className: "titled" }, element("h1", {}, "Strategy"), jfx.new_panel(new_bullet_list("One Item"), image_cell)));
     slide_window.element().classList.add("diagram");
     return slide_window;
 }
-async function new_interface_extraction_fs_slide() {
-    const option = "interface_extraction";
-    const slide_window = (new_slide_window(WINDOW_DATA, option, jfx.new_field(await new_code_block_fetch(`./assets/code/iface-extract/fs.h`, "c"))));
-    slide_window.element().classList.add(`${option}-slide`);
+async function new_strategy_slide_3() {
+    const slide_window = (new_slide_window(WINDOW_DATA, "strategy", element("main", { className: "titled" }, element("h1", {}, "Strategy"), await new_code_block_fetch("./assets/code/strategy/strategy.go", "go"))));
+    slide_window.element().classList.add("code");
     return slide_window;
 }
 function new_references_slide() {
@@ -81,7 +81,7 @@ function new_references_slide() {
         publisher: "Better Software Conference",
         source: "",
         info: "2025",
-        image: "./assets/the-big-oops.png",
+        image: "./assets/images/the-big-oops.png",
         horizontal: 3,
         vertical: 2,
     }), new_reference({
@@ -90,7 +90,7 @@ function new_references_slide() {
         publisher: "Prentice Hall",
         source: "https://agorism.dev/book/software-architecture/(Robert C. Martin Series) Robert C. Martin - Clean Architecture_ A Craftsman%E2%80%99s Guide to Software Structure and Design-Prentice Hall (2017).pdf",
         info: "2017",
-        image: "./assets/clean-arch.jpg",
+        image: "./assets/images/clean-arch.jpg",
         horizontal: 2,
         vertical: 2,
     }), new_reference({
@@ -99,7 +99,7 @@ function new_references_slide() {
         publisher: "Refactoring Guru",
         source: "https://refactoring.guru/design-patterns/strategy",
         info: "2025",
-        image: "./assets/refactoring-guru.png",
+        image: "./assets/images/refactoring-guru.png",
         horizontal: 2,
     }), new_reference({
         author: "Vittorio Romeo",
@@ -114,7 +114,7 @@ function new_references_slide() {
         publisher: "Addison-Wesley",
         source: "https://www.javier8a.com/itc/bd1/articulo.pdf",
         info: "1994",
-        image: "./assets/design-patterns.png",
+        image: "./assets/images/design-patterns.png",
         horizontal: 2,
         vertical: 3,
     }), new_reference({
@@ -123,7 +123,7 @@ function new_references_slide() {
         publisher: "Elixir Bootlin",
         source: "https://elixir.bootlin.com/linux/v6.16.7/source/include/linux/fs.h#L2151",
         info: "2025",
-        image: "./assets/bootlin.png",
+        image: "./assets/images/bootlin.png",
         horizontal: 2,
         vertical: 2,
     }))));
@@ -145,10 +145,10 @@ function new_reference(reference) {
     }
     card.classList.add("reference");
     if (reference.vertical !== undefined) {
-        card.classList.add(`vertical-${reference.vertical}`);
+        card.style.gridRow = `span ${reference.vertical}`;
     }
     if (reference.horizontal !== undefined) {
-        card.classList.add(`horizontal-${reference.horizontal}`);
+        card.style.gridColumn = `span ${reference.horizontal}`;
     }
     return card;
 }
@@ -157,7 +157,8 @@ export default async function () {
         new_home_slide(),
         new_strategy_slide_1(),
         new_strategy_slide_2(),
-        await new_interface_extraction_fs_slide(),
+        await new_strategy_slide_3(),
+        ...await extract_interface(WINDOW_DATA),
         new_references_slide(),
         new Slide(element("div", { className: "slide final-slide" }, "Fim da Apresentação")),
     ];

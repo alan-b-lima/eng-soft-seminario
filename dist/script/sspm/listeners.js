@@ -49,11 +49,13 @@ function navigation_keydown_listener(ss, evt) {
         case "PageUp":
         case "ArrowUp":
         case "ArrowLeft":
+        case "a":
             ss.revert();
             break;
         case "PageDown":
         case "ArrowDown":
         case "ArrowRight":
+        case "d":
             ss.advance();
             break;
         case "Home":

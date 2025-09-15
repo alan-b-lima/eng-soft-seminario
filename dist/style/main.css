@@ -45,7 +45,7 @@
 }
 .jfx-title .jfx-java-logo {
   aspect-ratio: 1/1;
-  background-image: url(../assets/java.png);
+  background-image: url(../assets/images/java.png);
   background-size: contain;
   width: fit-content;
   height: 100%;
@@ -265,44 +265,40 @@ body {
   align-items: center;
   scale: 1;
 }
-.slide.strategy-slide.foreword > .jfx-panel {
+.slide.strategy-slide.foreword > main > .jfx-panel {
   display: grid;
-  grid-template-rows: auto 1fr auto;
-  padding: 1rem 2rem 2rem 2rem;
+  grid-template-rows: 1fr auto;
 }
-.slide.strategy-slide.foreword > .jfx-panel > h1 {
-  font-size: 1.75rem;
-  padding-bottom: 0.5rem;
-  font-weight: bold;
-}
-.slide.strategy-slide.foreword > .jfx-panel > .jfx-field {
+.slide.strategy-slide.foreword > main > .jfx-panel > .jfx-field {
   font-size: 1.25rem;
   text-align: justify;
 }
-.slide.strategy-slide.foreword > .jfx-panel > span {
+.slide.strategy-slide.foreword > main > .jfx-panel > span {
   text-align: right;
 }
-.slide.strategy-slide.diagram > .jfx-panel {
+.slide.extract-interface-slide.aside .jfx-panel {
   display: grid;
   grid-template-columns: 1fr auto;
-  grid-template-rows: auto 1fr;
-  padding: 1rem 2rem 2rem 2rem;
-  column-gap: 1rem;
+  gap: 2rem;
 }
-.slide.strategy-slide.diagram > .jfx-panel h1 {
-  font-size: 1.75rem;
-  padding-bottom: 0.5rem;
-  font-weight: bold;
-  grid-column: span 2;
-}
-.slide.strategy-slide.diagram > .jfx-panel .image-cell {
+.slide.extract-interface-slide.linux .jfx-panel {
   display: grid;
-  place-items: center;
-  padding: 2rem;
+  grid-template-rows: auto 1fr;
+  gap: 1rem;
 }
-.slide.strategy-slide.diagram > .jfx-panel .image-cell img {
-  height: 100%;
+.slide.extract-interface-slide .jfx-button {
+  display: inline;
+  padding: 0 0.125rem;
+  font-family: "Consolas", Courier, monospace;
+  height: auto;
   width: auto;
+}
+.slide.extract-interface-slide .hello {
+  display: grid;
+  font-family: "Consolas", Courier, monospace;
+  word-break: keep-all;
+  font-size: 1.25rem;
+  white-space: pre;
 }
 .slide.references-slide > .jfx-panel {
   display: grid;
@@ -313,37 +309,12 @@ body {
   gap: 1rem;
 }
 .slide.references-slide > .jfx-panel .reference {
-  font-size: 1.125rem;
   text-align: start;
   padding: 0;
 }
 .slide.references-slide > .jfx-panel .reference:has(img) {
   display: grid;
   grid-template-columns: 1fr auto;
-}
-.slide.references-slide > .jfx-panel .reference.vertical-2 {
-  grid-row: span 2;
-}
-.slide.references-slide > .jfx-panel .reference.vertical-3 {
-  grid-row: span 3;
-}
-.slide.references-slide > .jfx-panel .reference.vertical-4 {
-  grid-row: span 4;
-}
-.slide.references-slide > .jfx-panel .reference.vertical-5 {
-  grid-row: span 5;
-}
-.slide.references-slide > .jfx-panel .reference.horizontal-2 {
-  grid-column: span 2;
-}
-.slide.references-slide > .jfx-panel .reference.horizontal-3 {
-  grid-column: span 3;
-}
-.slide.references-slide > .jfx-panel .reference.horizontal-4 {
-  grid-column: span 4;
-}
-.slide.references-slide > .jfx-panel .reference.horizontal-5 {
-  grid-column: span 5;
 }
 .slide.references-slide > .jfx-panel .reference a {
   color: #3d5c72;
@@ -369,7 +340,14 @@ body {
 .slide article {
   display: flex;
   flex-direction: column;
-  row-gap: 0.75rem;
+  row-gap: 0.5rem;
+}
+.slide article * {
+  height: auto;
+  width: auto;
+}
+.slide article p {
+  line-height: 1.5rem;
 }
 .slide p {
   text-align: justify;
@@ -387,6 +365,10 @@ body {
 .slide ul li:has(ul)::before {
   content: none !important;
 }
+.slide ul li {
+  height: auto;
+  width: auto;
+}
 .slide ul li::before {
   content: "●";
   padding: 0 1rem 0 0;
@@ -401,19 +383,29 @@ body {
 .slide ul li li li li::before {
   content: "▫";
 }
+.slide .titled {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  padding: 1rem 2rem 2rem 2rem;
+  gap: 0.5rem 1rem;
+}
+.slide .titled h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
 .slide .code-block {
   padding: 0.5rem;
   border-radius: 0.2rem;
   border: 1px solid #3d5c72;
   background-color: #ffffdf;
   font-family: "Consolas", Courier, monospace;
+  font-size: 0.875rem;
   scrollbar-width: thin;
   overflow: auto;
 }
 .slide .two-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  padding: 1rem;
   gap: 1rem;
 }
 

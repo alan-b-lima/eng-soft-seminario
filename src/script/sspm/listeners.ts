@@ -67,12 +67,14 @@ function navigation_keydown_listener(ss: SlideShow, evt: KeyboardEvent): void {
 	case "PageUp":
 	case "ArrowUp":
 	case "ArrowLeft":
+	case "a":
 		ss.revert()
 		break
 
 	case "PageDown":
 	case "ArrowDown":
 	case "ArrowRight":
+	case "d":
 		ss.advance()
 		break
 

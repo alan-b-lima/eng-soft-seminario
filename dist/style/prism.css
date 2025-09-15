@@ -72,12 +72,14 @@ pre[class*=language-]::selection {
 }
 
 .token.attr-name,
-.token.builtin,
-.token.char,
 .token.inserted,
-.token.selector,
-.token.string {
+.token.selector {
     color: #690
+}
+
+.token.char,
+.token.string {
+    color: #b76011;
 }
 
 .language-css .token.string,
@@ -97,9 +99,13 @@ pre[class*=language-]::selection {
     color: #9c0659;
 }
 
-.token.class-name,
-.token.function {
+.token.builtin,
+.token.class-name {
     color: #04aa6b;
+}
+
+.token.function {
+    color: #a8941e;
 }
 
 .token.important,
