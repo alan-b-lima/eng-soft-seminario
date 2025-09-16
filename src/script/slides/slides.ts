@@ -1,15 +1,16 @@
 import jfx from "../jfx-components.ts"
 import { element } from "../jsxmm/jsxmm.ts"
 import { Slide } from "../sspm/slide.ts"
-import { new_bullet_list, new_code_block_fetch, new_slide_window, new_two_columns, WindowData } from "./common.ts"
+import { new_slide_window, WindowData } from "./common.ts"
 import extract_interface from "./extract_interface.ts"
+import strategy from "./strategy.ts"
 
 const WINDOW_DATA: WindowData = {
 	title: "Seminário de Engenharia de Software I",
 	options: {
 		"home": "Início",
-		// solid: "SOLID",
-		"strategy": "Strategy",
+		// "solid": "SOLID",
+		"strategy": "Estratégia",
 		"deadly-diamond": "Diamante da Morte",
 		"refused-bequest": "Herança Negada",
 		"extract-interface": "Extração de Interface",
@@ -27,7 +28,7 @@ function new_home_slide(): Slide {
 		jfx.new_panel(
 			element("h1", {}, "Seminário de Engenharia de Software I"),
 			element("h2", {},
-				jfx.new_button("Strategy"),
+				jfx.new_button("Estratégia"),
 				jfx.new_button("Diamante da Morte"),
 				jfx.new_button("Herança Negada"),
 				jfx.new_button("Extração de Interface"),
@@ -82,59 +83,6 @@ function* animation_solid(principles: HTMLElement[]) {
 
 		principles[i].classList.remove("highlight")
 	}
-}
-
-function new_strategy_slide_1(): Slide {
-	const slide_window = new_slide_window(WINDOW_DATA, "strategy",
-		element("main", { className: "titled" },
-			element("h1", {}, "Strategy"),
-			jfx.new_panel(
-				jfx.new_field([
-					"Define uma família de algoritmos, encapsula cada um, e os faz intercambiáveis.",
-					"Strategy permite que o algoritmo varie de forma independente do cliente que o usa.",
-				].join(" ")),
-				element("span", {}, "~ Gang of Four"),
-			),
-		)
-	)
-
-	slide_window.element().classList.add("foreword")
-	return slide_window
-}
-
-function new_strategy_slide_2(): Slide {
-	const image_cell = jfx.new_field(element("img", {
-		alt: "Strategy Class Diagram",
-		src: "./assets/images/diagram.jpg",
-	}))
-	image_cell.classList.add("image-cell")
-
-	const slide_window = new_slide_window(WINDOW_DATA, "strategy",
-		element("main", { className: "titled" },
-			element("h1", {}, "Strategy"),
-			jfx.new_panel(
-				new_bullet_list("One Item"),
-				image_cell
-			)
-		)
-	)
-
-	slide_window.element().classList.add("diagram")
-	return slide_window
-}
-
-async function new_strategy_slide_3(): Promise<Slide> {
-	const slide_window = (
-		new_slide_window(WINDOW_DATA, "strategy",
-			element("main", { className: "titled" },
-				element("h1", {}, "Strategy"),
-				await new_code_block_fetch("./assets/code/strategy/strategy.go", "go"),
-			)
-		)
-	)
-
-	slide_window.element().classList.add("code")
-	return slide_window
 }
 
 function new_references_slide(): Slide {
@@ -263,9 +211,7 @@ export default async function (): Promise<Slide[]> {
 	return [
 		new_home_slide(),
 		// new_solid_slide(),
-		new_strategy_slide_1(),
-		new_strategy_slide_2(),
-		await new_strategy_slide_3(),
+		...await strategy(WINDOW_DATA),
 		...await extract_interface(WINDOW_DATA),
 		new_references_slide(),
 		new Slide(element("div", { className: "slide final-slide" }, "Fim da Apresentação")),

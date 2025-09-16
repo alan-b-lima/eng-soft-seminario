@@ -1,13 +1,14 @@
 import jfx from "../jfx-components.js";
 import { element } from "../jsxmm/jsxmm.js";
 import { Slide } from "../sspm/slide.js";
-import { new_bullet_list, new_code_block_fetch, new_slide_window } from "./common.js";
+import { new_slide_window } from "./common.js";
 import extract_interface from "./extract_interface.js";
+import strategy from "./strategy.js";
 const WINDOW_DATA = {
     title: "Seminário de Engenharia de Software I",
     options: {
         "home": "Início",
-        "strategy": "Strategy",
+        "strategy": "Estratégia",
         "deadly-diamond": "Diamante da Morte",
         "refused-bequest": "Herança Negada",
         "extract-interface": "Extração de Interface",
@@ -19,7 +20,7 @@ function new_home_slide() {
         "Alan Lima", "Breno Augusto", "Juan Pablo",
         "Luan Filipe", "Mateus Oliveira", "Vitor Mozer"
     ];
-    const slide_window = new_slide_window(WINDOW_DATA, "home", jfx.new_panel(element("h1", {}, "Seminário de Engenharia de Software I"), element("h2", {}, jfx.new_button("Strategy"), jfx.new_button("Diamante da Morte"), jfx.new_button("Herança Negada"), jfx.new_button("Extração de Interface")), element("span", {}, jfx.new_field(`${names.slice(0, -1).reduce((acc, v) => `${acc}, ${v}`)} e ${names[names.length - 1]}`), element("div", {}, "Profª Kattiana Constantino"))));
+    const slide_window = new_slide_window(WINDOW_DATA, "home", jfx.new_panel(element("h1", {}, "Seminário de Engenharia de Software I"), element("h2", {}, jfx.new_button("Estratégia"), jfx.new_button("Diamante da Morte"), jfx.new_button("Herança Negada"), jfx.new_button("Extração de Interface")), element("span", {}, jfx.new_field(`${names.slice(0, -1).reduce((acc, v) => `${acc}, ${v}`)} e ${names[names.length - 1]}`), element("div", {}, "Profª Kattiana Constantino"))));
     return slide_window;
 }
 function new_solid_slide() {
@@ -49,29 +50,6 @@ function* animation_solid(principles) {
         yield;
         principles[i].classList.remove("highlight");
     }
-}
-function new_strategy_slide_1() {
-    const slide_window = new_slide_window(WINDOW_DATA, "strategy", element("main", { className: "titled" }, element("h1", {}, "Strategy"), jfx.new_panel(jfx.new_field([
-        "Define uma família de algoritmos, encapsula cada um, e os faz intercambiáveis.",
-        "Strategy permite que o algoritmo varie de forma independente do cliente que o usa.",
-    ].join(" ")), element("span", {}, "~ Gang of Four"))));
-    slide_window.element().classList.add("foreword");
-    return slide_window;
-}
-function new_strategy_slide_2() {
-    const image_cell = jfx.new_field(element("img", {
-        alt: "Strategy Class Diagram",
-        src: "./assets/images/diagram.jpg",
-    }));
-    image_cell.classList.add("image-cell");
-    const slide_window = new_slide_window(WINDOW_DATA, "strategy", element("main", { className: "titled" }, element("h1", {}, "Strategy"), jfx.new_panel(new_bullet_list("One Item"), image_cell)));
-    slide_window.element().classList.add("diagram");
-    return slide_window;
-}
-async function new_strategy_slide_3() {
-    const slide_window = (new_slide_window(WINDOW_DATA, "strategy", element("main", { className: "titled" }, element("h1", {}, "Strategy"), await new_code_block_fetch("./assets/code/strategy/strategy.go", "go"))));
-    slide_window.element().classList.add("code");
-    return slide_window;
 }
 function new_references_slide() {
     const option = "references";
@@ -155,9 +133,7 @@ function new_reference(reference) {
 export default async function () {
     return [
         new_home_slide(),
-        new_strategy_slide_1(),
-        new_strategy_slide_2(),
-        await new_strategy_slide_3(),
+        ...await strategy(WINDOW_DATA),
         ...await extract_interface(WINDOW_DATA),
         new_references_slide(),
         new Slide(element("div", { className: "slide final-slide" }, "Fim da Apresentação")),
