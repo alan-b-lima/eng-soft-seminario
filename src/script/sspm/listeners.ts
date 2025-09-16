@@ -94,6 +94,10 @@ function navigation_keydown_listener(ss: SlideShow, evt: KeyboardEvent): void {
 }
 
 function navigation_click_listener(ss: SlideShow, evt: MouseEvent): void {
+	if (evt.altKey) {
+		return
+	}
+
 	const THRESHOLD_FOR_REVERT = 0.10
 	if (evt.screenX / window.innerWidth >= THRESHOLD_FOR_REVERT) {
 		ss.advance()

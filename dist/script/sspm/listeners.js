@@ -70,6 +70,9 @@ function navigation_keydown_listener(ss, evt) {
     evt.preventDefault();
 }
 function navigation_click_listener(ss, evt) {
+    if (evt.altKey) {
+        return;
+    }
     const THRESHOLD_FOR_REVERT = 0.10;
     if (evt.screenX / window.innerWidth >= THRESHOLD_FOR_REVERT) {
         ss.advance();
