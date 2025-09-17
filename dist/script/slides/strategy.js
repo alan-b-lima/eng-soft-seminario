@@ -56,7 +56,7 @@ async function new_strategy_slide_5(window_data) {
 }
 async function new_strategy_slide_6(window_data) {
     const slide_window = (new_slide_window(window_data, "strategy", element("main", { className: "titled" }, element("h1", {}, "Estratégias Modernas"), jfx.new_panel(element("article", {}, element("p", {}, [
-        "As funções anônimas e funções como cidadões de primeira classe,",
+        "As funções anônimas e funções como cidadãos de primeira classe,",
         "nas mais variadas linguagens que as implementam, desde C (com",
         "ponteiros de funções) a Python (com lambdas e funções de ordem",
         "superior), satifazem o padrão estratégia."
