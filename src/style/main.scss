@@ -183,14 +183,6 @@ body {
             }
         }
 
-        .jfx-button {
-            display: inline;
-            padding: 0 .125rem;
-            font-family: jfx.$monospace-font;
-            height: auto;
-            width: auto;
-        }
-
         .result {
             & {
                 display: flex;
@@ -264,6 +256,49 @@ body {
         }
     }
 
+    &.refused-bequest-slide {
+        .image-cell {
+            & {
+                display: grid;
+                place-content: center;
+            }
+
+            img {
+                height: auto;
+                width: 100%;
+            }
+        }
+
+        .instanceof {
+            & {
+                display: grid;
+                place-content: center;
+            }
+
+            &:not(.not-really) .code-block:nth-child(2) {
+                display: none;
+            }
+
+            &.not-really .code-block:nth-child(1) {
+                display: none;
+            }
+
+            * {
+                font-size: 1rem;
+            }
+        }
+
+        .two-columns {
+            gap: 4rem;
+        }
+
+        .titled-bullet-list {
+            display: grid;
+            grid-template-rows: auto 1fr;
+            gap: .5rem;
+        }
+    }
+
     &.extract-interface-slide {
         &.aside .jfx-panel {
             display: grid;
@@ -275,14 +310,6 @@ body {
             display: grid;
             grid-template-rows: auto 1fr;
             gap: 1rem;
-        }
-
-        .jfx-button {
-            display: inline;
-            padding: 0 .125rem;
-            font-family: jfx.$monospace-font;
-            height: auto;
-            width: auto;
         }
 
         .hello {
@@ -306,6 +333,7 @@ body {
 
         .reference {
             & {
+                font-family: jfx.$sans-serif-font;
                 text-align: start;
                 padding: 0;
             }
@@ -388,8 +416,9 @@ body {
 
         li {
             & {
-                height: auto;
                 width: auto;
+                height: auto;
+                line-height: 1.5rem;
             }
 
             &::before {
@@ -412,6 +441,14 @@ body {
         }
     }
 
+    .jfx-button {
+        display: inline;
+        padding: 0 .125rem;
+        font-family: jfx.$monospace-font;
+        height: auto;
+        width: auto;
+    }
+
     .titled {
         & {
             display: grid;
@@ -422,6 +459,11 @@ body {
 
         h1 {
             font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        h2 {
+            font-size: 1.25rem;
             font-weight: bold;
         }
     }

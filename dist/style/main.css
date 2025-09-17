@@ -289,13 +289,6 @@ body {
   height: 100%;
   width: auto;
 }
-.slide.strategy-slide .jfx-button {
-  display: inline;
-  padding: 0 0.125rem;
-  font-family: "Consolas", Courier, monospace;
-  height: auto;
-  width: auto;
-}
 .slide.strategy-slide .result {
   display: flex;
   flex-direction: column;
@@ -351,6 +344,35 @@ body {
   width: fit-content;
   height: auto;
 }
+.slide.refused-bequest-slide .image-cell {
+  display: grid;
+  place-content: center;
+}
+.slide.refused-bequest-slide .image-cell img {
+  height: auto;
+  width: 100%;
+}
+.slide.refused-bequest-slide .instanceof {
+  display: grid;
+  place-content: center;
+}
+.slide.refused-bequest-slide .instanceof:not(.not-really) .code-block:nth-child(2) {
+  display: none;
+}
+.slide.refused-bequest-slide .instanceof.not-really .code-block:nth-child(1) {
+  display: none;
+}
+.slide.refused-bequest-slide .instanceof * {
+  font-size: 1rem;
+}
+.slide.refused-bequest-slide .two-columns {
+  gap: 4rem;
+}
+.slide.refused-bequest-slide .titled-bullet-list {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: 0.5rem;
+}
 .slide.extract-interface-slide.aside .jfx-panel {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -360,13 +382,6 @@ body {
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 1rem;
-}
-.slide.extract-interface-slide .jfx-button {
-  display: inline;
-  padding: 0 0.125rem;
-  font-family: "Consolas", Courier, monospace;
-  height: auto;
-  width: auto;
 }
 .slide.extract-interface-slide .hello {
   display: grid;
@@ -384,6 +399,7 @@ body {
   gap: 1rem;
 }
 .slide.references-slide > .jfx-panel .reference {
+  font-family: system-ui, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   text-align: start;
   padding: 0;
 }
@@ -441,8 +457,9 @@ body {
   content: none !important;
 }
 .slide ul li {
-  height: auto;
   width: auto;
+  height: auto;
+  line-height: 1.5rem;
 }
 .slide ul li::before {
   content: "●";
@@ -458,6 +475,13 @@ body {
 .slide ul li li li li::before {
   content: "▫";
 }
+.slide .jfx-button {
+  display: inline;
+  padding: 0 0.125rem;
+  font-family: "Consolas", Courier, monospace;
+  height: auto;
+  width: auto;
+}
 .slide .titled {
   display: grid;
   grid-template-rows: auto 1fr;
@@ -466,6 +490,10 @@ body {
 }
 .slide .titled h1 {
   font-size: 1.5rem;
+  font-weight: bold;
+}
+.slide .titled h2 {
+  font-size: 1.25rem;
   font-weight: bold;
 }
 .slide .code-block {
