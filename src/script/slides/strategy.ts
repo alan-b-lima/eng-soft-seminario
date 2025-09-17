@@ -46,7 +46,7 @@ function new_strategy_slide_2(window_data: WindowData): Slide {
                     element("strong", {}, "Contexto:"),
                     new_bullet_list(
                         "usa a interface da estratégia implementada por alguma estratégia concreta,",
-                        "contem e/ou recebe uma referência a uma estratégia."
+                        "contém e/ou recebe uma referência a uma estratégia."
                     ),
                 ),
                 image_cell
@@ -146,11 +146,68 @@ function* animation_strategy_slide_4(...elements: HTMLElement[]) {
     }
 }
 
+async function new_strategy_slide_5(window_data: WindowData): Promise<Slide> {
+    const slide_window = (
+        new_slide_window(window_data, "strategy",
+            element("main", { className: "titled" },
+                element("h1", {}, "Estratégias Modernas"),
+                new_two_columns(
+                    element("article", {},
+                        element("p", {}, "No Java, a abstração escolhida para funções anônimas foi as chamadas interfaces funcionais."),
+                        element("p", {}, [
+                            "interfaces funcionais são interfaces que possuem um, e apenas uma método abstrato.",
+                            "Funções anônimas declaradas no Java são, implicitamente, classes anônimas que",
+                            "implementam a interface em questão.",
+                        ].join(" ")),
+                        element("p", {},
+                            "Esse comportamento permite interoperabilidade com estratégias já existentes - como o ",
+                            jfx.new_button("Comparator"), "."),
+                    ),
+                    await new_code_block_fetch("./assets/code/strategy/Main.java", "java"),
+                )
+            )
+        )
+    )
+
+    return slide_window
+}
+
+async function new_strategy_slide_6(window_data: WindowData): Promise<Slide> {
+    const slide_window = (
+        new_slide_window(window_data, "strategy",
+            element("main", { className: "titled" },
+                element("h1", {}, "Estratégias Modernas"),
+                jfx.new_panel(
+                    element("article", {},
+                        element("p", {}, [
+                            "As funções anônimas e funções como cidadões de primeira classe,",
+                            "nas mais variadas linguagens que as implementam, desde C (com",
+                            "ponteiros de funções) a Python (com lambdas e funções de ordem",
+                            "superior), satifazem o padrão estratégia."
+                        ].join(" ")),
+                        element("p", {}, [
+                            "Elas satisfazem o padrão pois implementam um algoritmo que tem uma",
+                            "assinatura específica, efetivamente substituinda uma interface de",
+                            "uma estratégia com um único método.",
+                        ].join(" ")),
+                    ),
+                    await new_code_block_fetch("./assets/code/strategy/map.c", "c"),
+                )
+            )
+        )
+    )
+
+    slide_window.element().classList.add("diagram")
+    return slide_window
+}
+
 export default async function (window_data: WindowData): Promise<Slide[]> {
     return [
         new_strategy_slide_1(window_data),
         new_strategy_slide_2(window_data),
         await new_strategy_slide_3(window_data),
         await new_strategy_slide_4(window_data),
+        await new_strategy_slide_5(window_data),
+        await new_strategy_slide_6(window_data),
     ]
 }

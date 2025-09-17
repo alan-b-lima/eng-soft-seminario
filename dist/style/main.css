@@ -289,6 +289,13 @@ body {
   height: 100%;
   width: auto;
 }
+.slide.strategy-slide .jfx-button {
+  display: inline;
+  padding: 0 0.125rem;
+  font-family: "Consolas", Courier, monospace;
+  height: auto;
+  width: auto;
+}
 .slide.strategy-slide .result {
   display: flex;
   flex-direction: column;

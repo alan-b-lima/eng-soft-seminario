@@ -46,9 +46,13 @@ pre[class*=language-]::selection {
     white-space: normal
 }
 
-.token.cdata,
 .token.comment,
-.token.doctype,
+.token.doctype {
+    color: #268544;
+    font-style: italic;
+}
+
+.token.cdata,
 .token.prolog {
     color: #708090
 }
@@ -96,12 +100,12 @@ pre[class*=language-]::selection {
 }
 
 .token.keyword {
-    color: #9c0659;
+    color: #9c066f;
 }
 
 .token.builtin,
 .token.class-name {
-    color: #04aa6b;
+    color: #19835a;
 }
 
 .token.function {

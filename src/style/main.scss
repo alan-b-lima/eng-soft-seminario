@@ -183,6 +183,14 @@ body {
             }
         }
 
+        .jfx-button {
+            display: inline;
+            padding: 0 .125rem;
+            font-family: jfx.$monospace-font;
+            height: auto;
+            width: auto;
+        }
+
         .result {
             & {
                 display: flex;
