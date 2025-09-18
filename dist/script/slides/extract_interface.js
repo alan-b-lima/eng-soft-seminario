@@ -1,6 +1,18 @@
 import jfx from "../jfx-components.js";
 import { element } from "../jsxmm/jsxmm.js";
 import { new_bullet_list, new_code_block_fetch, new_slide_window, new_two_columns } from "./common.js";
+function new_extract_interface_slide_1(window_data) {
+    const suspecious_tux = element("div", { className: "image-cell" }, element("img", { alt: "Suspicious Tux", src: "./assets/images/tux.png" }));
+    const slide_window = (new_slide_window(window_data, "extract-interface", element("main", { className: "tux-spy" }, element("h1", {}, "Extração de Interface"), element("article", {}, element("p", {}, "Problema: há classes distintas em que um subconjunto de seus métodos públicos possui mesma assinatura e responsabilidade conceitual, mas implementações próprias."), element("p", {}, "A técnica consiste, então, em definir uma estrutura de interface que declare esse conjunto de operações comuns, de modo que cada classe concreta (que o contiver) forneça, para ele, a sua respectiva implementação.")), suspecious_tux)));
+    slide_window.animation(animation_extract_interface_slide_1.bind(null, suspecious_tux));
+    return slide_window;
+}
+function* animation_extract_interface_slide_1(image) {
+    image.classList.add("hide");
+    setTimeout(() => {
+        image.classList.remove("hide");
+    }, 2000);
+}
 function new_extract_interface_slide_fs_1(window_data) {
     const slide_window = (new_slide_window(window_data, "extract-interface", element("main", { className: "titled" }, element("h1", { style: { fontStyle: "italic" } }, "Everything is a file"), jfx.new_panel(element("article", {}, element("p", {}, "Na família de sistemas UNIX, (quase) tudo é um arquivo."), element("p", {}, "Os objetos do SO, manejam-se de forma homogênea: são abarcados pela abstração ", jfx.new_button("file"), " - cujos elementos compõem o sistema de arquivos - sobre a qual é definida uma interface comum de syscalls, tais como ", jfx.new_button("open()"), ", ", jfx.new_button("close()"), ", ", jfx.new_button("read()"), ", ", jfx.new_button("write()"), ".")), element("div", { className: "hello" }, ...[
         "                /-=$$         ",
@@ -25,7 +37,7 @@ function new_extract_interface_slide_fs_1(window_data) {
     return slide_window;
 }
 async function new_extract_interface_slide_fs_2(window_data) {
-    const slide_window = (new_slide_window(window_data, "extract-interface", element("main", { className: "titled" }, element("h1", {}, "A Implementação"), new_two_columns(await new_code_block_fetch("./assets/code/extract-interface/file.h", "c"), await new_code_block_fetch("./assets/code/extract-interface/file.c", "c")))));
+    const slide_window = (new_slide_window(window_data, "extract-interface", element("main", { className: "titled" }, element("h1", {}, "A Primeira Abordagem"), new_two_columns(await new_code_block_fetch("./assets/code/extract-interface/file.h", "c"), await new_code_block_fetch("./assets/code/extract-interface/file.c", "c")))));
     return slide_window;
 }
 function new_extract_interface_slide_fs_3(window_data) {
@@ -68,6 +80,7 @@ async function new_extract_interface_slide_fs_7(window_data) {
 }
 export default async function (window) {
     return [
+        new_extract_interface_slide_1(window),
         new_extract_interface_slide_fs_1(window),
         await new_extract_interface_slide_fs_2(window),
         new_extract_interface_slide_fs_3(window),

@@ -2,6 +2,7 @@ import jfx from "../jfx-components.ts"
 import { element } from "../jsxmm/jsxmm.ts"
 import { Slide } from "../sspm/slide.ts"
 import { new_slide_window, WindowData } from "./common.ts"
+import deadly_diamond from "./deadly_diamond.ts"
 import extract_interface from "./extract_interface.ts"
 import refused_bequest from "./refused_bequest.ts"
 import strategy from "./strategy.ts"
@@ -10,10 +11,9 @@ const WINDOW_DATA: WindowData = {
 	title: "Seminário de Engenharia de Software I",
 	options: {
 		"home": "Início",
-		// "solid": "SOLID",
 		"strategy": "Estratégia",
-		"deadly-diamond": "Diamante da Morte",
 		"refused-bequest": "Herança Negada",
+		"deadly-diamond": "Diamante da Morte",
 		"extract-interface": "Extração de Interface",
 		"references": "Referências",
 	}
@@ -171,6 +171,7 @@ export default async function (): Promise<Slide[]> {
 		new_home_slide(),
 		...await strategy(WINDOW_DATA),
 		...await refused_bequest(WINDOW_DATA),
+		...await deadly_diamond(WINDOW_DATA),
 		...await extract_interface(WINDOW_DATA),
 		new_references_slide(),
 		new Slide(element("div", { className: "slide final-slide" }, "Fim da Apresentação")),

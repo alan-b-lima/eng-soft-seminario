@@ -10,7 +10,7 @@ public class Imagem {
 }
 
 // @ minha/companhia/ImagemDesenhavel.java
-public class ImagemDesenhavel extends Imagem {
+public class Canvas extends Imagem {
     /* campos privados */
 
     public void desenha(Traço traço) { /* implementação */ }

@@ -153,8 +153,6 @@
 *,
 *::before,
 *::after {
-  width: 100%;
-  height: 100%;
   overflow: hidden;
   box-sizing: border-box;
   color: inherit;
@@ -217,8 +215,7 @@ body {
   gap: 0.25rem;
 }
 .slide.home-slide > .jfx-panel h2 > .jfx-button {
-  height: fit-content;
-  width: fit-content;
+  font-family: system-ui, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 .slide.home-slide > .jfx-panel span {
   display: flex;
@@ -294,9 +291,8 @@ body {
   flex-direction: column;
   gap: 1rem;
 }
-.slide.strategy-slide .result > .terminal {
-  background-color: #002;
-  color: #ccc;
+.slide.strategy-slide .result > code {
+  flex: 1 1 100%;
 }
 .slide.strategy-slide .result > .web {
   display: grid;
@@ -325,10 +321,6 @@ body {
   background-color: #cca;
   display: flex;
   overflow: auto;
-}
-.slide.strategy-slide .result .hidden {
-  position: absolute;
-  opacity: 0;
 }
 .slide.strategy-slide .result .file {
   display: grid;
@@ -365,13 +357,39 @@ body {
 .slide.refused-bequest-slide .instanceof * {
   font-size: 1rem;
 }
-.slide.refused-bequest-slide .two-columns {
-  gap: 4rem;
-}
 .slide.refused-bequest-slide .titled-bullet-list {
   display: grid;
   grid-template-rows: auto 1fr;
   gap: 0.5rem;
+}
+.slide.deadly-diamond-slide .jfx-field {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  width: 100%;
+  padding: 1rem;
+}
+.slide.extract-interface-slide .tux-spy {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  padding: 1rem 2rem 0 2rem;
+  row-gap: 0.5rem;
+}
+.slide.extract-interface-slide .tux-spy h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  grid-column: span 2;
+}
+.slide.extract-interface-slide .tux-spy .image-cell {
+  display: flex;
+  align-items: flex-end;
+}
+.slide.extract-interface-slide .tux-spy .image-cell img {
+  transition: 2s;
+}
+.slide.extract-interface-slide .tux-spy .image-cell.hide img {
+  translate: 0 100%;
 }
 .slide.extract-interface-slide.aside .jfx-panel {
   display: grid;
@@ -437,6 +455,10 @@ body {
 .slide article p {
   line-height: 1.5rem;
 }
+.slide img {
+  max-width: 100%;
+  max-height: 100%;
+}
 .slide p {
   text-align: justify;
 }
@@ -496,6 +518,10 @@ body {
   font-size: 1.25rem;
   font-weight: bold;
 }
+.slide .hidden {
+  position: absolute;
+  opacity: 0;
+}
 .slide .code-block {
   padding: 0.5rem;
   border-radius: 0.2rem;
@@ -506,9 +532,27 @@ body {
   scrollbar-width: thin;
   overflow: auto;
 }
+.slide .terminal {
+  background-color: #002;
+}
+.slide .terminal,
+.slide .terminal * {
+  color: #ccc;
+}
 .slide .two-columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.slide .two-rows {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 1rem;
+}
+.slide .four-cards {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
   gap: 1rem;
 }
 

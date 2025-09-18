@@ -18,10 +18,10 @@ int main() {
     int len = sizeof(nums) / sizeof(int);
     double* half = map(nums, len, sizeof(int), sizeof(double), divide_by_two);
 
-    for (int i = 0; i < 6; i++) { printf("%d, ", nums[i]); }
+    for (int i = 0; i < 6; i++) { printf("%d ", nums[i]); }
     putchar('\n');
 
-    for (int i = 0; i < 6; i++) { printf("%f, ", half[i]); }
+    for (int i = 0; i < 6; i++) { printf("%f ", half[i]); }
     putchar('\n');
 
     free(half);

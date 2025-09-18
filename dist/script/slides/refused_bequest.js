@@ -31,13 +31,13 @@ function new_refused_bequest_slide_3(window_data) {
     return slide_window;
 }
 async function new_refused_bequest_slide_4(window_data) {
-    const slide_window = (new_slide_window(window_data, "refused-bequest", element("main", { className: "titled" }, element("h1", { style: {} }, "Solucionando a Herança Negada"), new_two_columns(element("article", {}, element("p", {}, "Lidar com o Recused Bequest requer uma abordagem sistemática para simplificar e organizar o código. Algumas estratégias para resolver este code smell são listadas."), element("p", {}, "Ao invés de usar herança para compartilhar código, considere usar composição. Crie componentes menores, que podem ser incluídos quando necessário."), element("p", {}, "Usar interfaces segregadas para definir comportamento de alto nível, ao invés de confiar em implementações concretas possivelmente voláteis."), element("p", {}, "Revisar periodicamente a hierarquia da sua classe para identificar subclasses que estão recusando o legado.")), await new_code_block_fetch("./assets/code/refused-bequest/Imagem.java", "java")))));
+    const slide_window = (new_slide_window(window_data, "refused-bequest", element("main", { className: "titled" }, element("h1", { style: {} }, "Solucionando a Herança Negada"), new_two_columns(element("article", {}, element("p", {}, "Lidar com o Refused Bequest requer uma abordagem sistemática para simplificar e organizar o código. Algumas estratégias para resolver este code smell são listadas."), element("p", {}, "Ao invés de usar herança para compartilhar código, considere usar composição. Crie componentes menores, que podem ser incluídos quando necessário."), element("p", {}, "Usar interfaces segregadas para definir comportamento de alto nível, ao invés de confiar em implementações concretas possivelmente voláteis."), element("p", {}, "Revisar periodicamente a hierarquia da sua classe para identificar subclasses que estão recusando o legado.")), await new_code_block_fetch("./assets/code/refused-bequest/Imagem.java", "java")))));
     return slide_window;
 }
 export default async function (window_data) {
     return [
-        new_refused_bequest_slide_1(window_data),
         new_refused_bequest_slide_2(window_data),
+        new_refused_bequest_slide_1(window_data),
         new_refused_bequest_slide_3(window_data),
         await new_refused_bequest_slide_4(window_data),
     ];

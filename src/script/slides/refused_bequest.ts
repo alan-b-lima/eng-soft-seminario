@@ -126,7 +126,7 @@ async function new_refused_bequest_slide_4(window_data: WindowData) {
                 new_two_columns(
                     element("article", {},
                         element("p", {},
-                            "Lidar com o Recused Bequest requer uma abordagem sistemática para simplificar e organizar o código. Algumas estratégias para resolver este code smell são listadas."
+                            "Lidar com o Refused Bequest requer uma abordagem sistemática para simplificar e organizar o código. Algumas estratégias para resolver este code smell são listadas."
                         ),
                         element("p", {},
                             "Ao invés de usar herança para compartilhar código, considere usar composição. Crie componentes menores, que podem ser incluídos quando necessário."
@@ -149,8 +149,8 @@ async function new_refused_bequest_slide_4(window_data: WindowData) {
 
 export default async function (window_data: WindowData): Promise<Slide[]> {
     return [
-        new_refused_bequest_slide_1(window_data),
         new_refused_bequest_slide_2(window_data),
+        new_refused_bequest_slide_1(window_data),
         new_refused_bequest_slide_3(window_data),
         await new_refused_bequest_slide_4(window_data),
     ]

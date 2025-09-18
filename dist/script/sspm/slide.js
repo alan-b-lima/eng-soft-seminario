@@ -132,6 +132,9 @@ export class Slide {
             return;
         }
         const frame = this.#frame - 1;
+        while (!this.#done) {
+            this.advance();
+        }
         this.enter();
         for (let i = 1; i < frame; i++) {
             this.advance();

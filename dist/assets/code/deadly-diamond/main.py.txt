@@ -1,0 +1,9 @@
+Chamando o metodo 'atacar()' de Drako...
+Drako lança uma bola de FOGO!
+[
+    <class '__main__.GuerreiroMago'>,
+    <class '__main__.Mago'>,
+    <class '__main__.Guerreiro'>,
+    <class '__main__.Personagem'>,
+    <class 'object'>
+]

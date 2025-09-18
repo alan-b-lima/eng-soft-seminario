@@ -66,6 +66,14 @@ export function new_two_columns(children0: string | Node, children1: string | No
     return element("div", { className: "two-columns" }, children0, children1)
 }
 
+export function new_two_rows(children0: string | Node, children1: string | Node) {
+    return element("div", { className: "two-rows" }, children0, children1)
+}
+
+export function new_four_cards(children0: string | Node, children1: string | Node, children2: string | Node, children3: string | Node) {
+    return element("div", { className: "four-cards" }, children0, children1, children2, children3)
+}
+
 export function new_bullet_list(...points: (string | Node)[]) {
     return element("ul", {},
         ...points.map(point => element("li", {}, point))

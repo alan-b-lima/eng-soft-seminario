@@ -3,6 +3,40 @@ import { element } from "../jsxmm/jsxmm.ts"
 import { Slide } from "../sspm/slide.ts"
 import { new_bullet_list, new_code_block_fetch, new_slide_window, new_two_columns, WindowData } from "./common.ts"
 
+function new_extract_interface_slide_1(window_data: WindowData): Slide {
+    const suspecious_tux = element("div", { className: "image-cell" },
+        element("img", { alt: "Suspicious Tux", src: "./assets/images/tux.png" })
+    )
+
+    const slide_window = (
+        new_slide_window(window_data, "extract-interface",
+            element("main", { className: "tux-spy" },
+                element("h1", {}, "Extração de Interface"),
+                element("article", {},
+                    element("p", {},
+                        "Problema: há classes distintas em que um subconjunto de seus métodos públicos possui mesma assinatura e responsabilidade conceitual, mas implementações próprias."
+                    ),
+                    element("p", {},
+                        "A técnica consiste, então, em definir uma estrutura de interface que declare esse conjunto de operações comuns, de modo que cada classe concreta (que o contiver) forneça, para ele, a sua respectiva implementação."
+                    )
+                ),
+                suspecious_tux
+            )
+        )
+    )
+
+    slide_window.animation(animation_extract_interface_slide_1.bind(null, suspecious_tux))
+    return slide_window
+}
+
+function* animation_extract_interface_slide_1(image: HTMLElement) {
+    image.classList.add("hide")
+
+    setTimeout(() => {
+        image.classList.remove("hide")
+    }, 2000)
+}
+
 function new_extract_interface_slide_fs_1(window_data: WindowData): Slide {
     const slide_window = (
         new_slide_window(window_data, "extract-interface",
@@ -55,7 +89,7 @@ async function new_extract_interface_slide_fs_2(window_data: WindowData): Promis
     const slide_window = (
         new_slide_window(window_data, "extract-interface",
             element("main", { className: "titled" },
-                element("h1", {}, "A Implementação"),
+                element("h1", {}, "A Primeira Abordagem"),
                 new_two_columns(
                     await new_code_block_fetch("./assets/code/extract-interface/file.h", "c"),
                     await new_code_block_fetch("./assets/code/extract-interface/file.c", "c"),
@@ -191,6 +225,7 @@ async function new_extract_interface_slide_fs_7(window_data: WindowData): Promis
 
 export default async function (window: WindowData): Promise<Slide[]> {
     return [
+        new_extract_interface_slide_1(window),
         new_extract_interface_slide_fs_1(window),
         await new_extract_interface_slide_fs_2(window),
         new_extract_interface_slide_fs_3(window),

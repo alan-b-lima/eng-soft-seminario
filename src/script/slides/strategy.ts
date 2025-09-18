@@ -153,7 +153,7 @@ async function new_strategy_slide_5(window_data: WindowData): Promise<Slide> {
                 element("h1", {}, "Estratégias Modernas"),
                 new_two_columns(
                     element("article", {},
-                        element("p", {}, "No Java, a abstração escolhida para funções anônimas foi as chamadas interfaces funcionais."),
+                        element("p", {}, "No Java, a abstração escolhida para funções anônimas foram as interfaces funcionais."),
                         element("p", {}, [
                             "interfaces funcionais são interfaces que possuem um, e apenas uma método abstrato.",
                             "Funções anônimas declaradas no Java são, implicitamente, classes anônimas que",
