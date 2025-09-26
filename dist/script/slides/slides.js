@@ -31,7 +31,7 @@ function new_references_slide() {
         author: "Casey Muratori",
         work: "The Big OOPs: Anatomy of a Thirty-five-year Mistake",
         publisher: "Better Software Conference",
-        source: "",
+        source: "https://www.youtube.com/watch?v=wo84LFzx5nI",
         info: "2025",
         image: "./assets/images/the-big-oops.png",
         horizontal: 3,
